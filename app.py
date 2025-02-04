@@ -32,6 +32,11 @@ h1, h2, h3, h4, h5, h6, p {
     color: white; /* Asegura que todos los textos sean blancos */
 }
 
+/* Cambiar color del texto del botón de "Iniciar sesión" */
+div.stButton > button {
+    color: black !important;
+}
+
 </style>
 """
 
