@@ -30,7 +30,7 @@ def login():
             st.error("❌ Usuario o contraseña incorrectos")
 
     # Mostrar imagen debajo del botón de inicio de sesión
-    st.image('https://mejorconsalud.as.com/wp-content/uploads/2023/12/wellness-tendencias-2024-scaled.jpg', use_column_width=True)
+    st.image('https://mejorconsalud.as.com/wp-content/uploads/2023/12/wellness-tendencias-2024-scaled.jpg', use_container_width=True)
 
 def home():
     """Pantalla principal después de iniciar sesión"""
