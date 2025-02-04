@@ -58,3 +58,14 @@ def crear_habito():
 # Mostrar la pantalla solo si estamos en "crear_habito"
 if st.session_state.pantalla == "crear_habito":
     crear_habito()
+
+# Botón para guardar el hábito
+col1, col2 = st.columns([3, 1])
+if col1.button("Aceptar"):
+    st.session_state.habit_name = habit_name
+    st.session_state.days_of_week = days_of_week
+    st.session_state.sanction = sanction
+    st.success(f"Hábito {habit_name} creado exitosamente!")
+    
+if col2.button("Ver mis hábitos", type="primary"):
+    st.session_state.page = "dashboard"  # Cambiar a la pantalla de dashboard
