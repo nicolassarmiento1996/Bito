@@ -1,6 +1,18 @@
 import streamlit as st
 
-# Si no estás autenticado, redirige al login
+# Función de cierre de sesión
+def logout():
+    """Cerrar sesión"""
+    st.session_state.logged_in = False
+    st.session_state.username = ""
+    st.session_state.next_page = ""  # Limpiamos la página a redirigir
+    st.experimental_rerun()
+
+# Mostrar el botón de cerrar sesión en la parte superior derecha
+if st.session_state.logged_in:
+    st.sidebar.button("Cerrar sesión", on_click=logout)
+
+# Verificar si el usuario está autenticado
 if not st.session_state.logged_in:
     st.write("Por favor, inicia sesión para continuar.")
 else:
@@ -29,7 +41,12 @@ else:
                 "penalty": penalty
             })
             st.success("✅ ¡Hábito creado exitosamente!")
-            st.experimental_rerun()  # Recargar la página para que se muestren los hábitos registrados
+            st.session_state.next_page = "dashboard"  # Cambiar la página a dashboard
+            st.experimental_rerun()  # Recargar la página para redirigir al dashboard
         else:
             st.error("❌ Todos los campos deben ser completados.")
 
+    # Botón para redirigir al dashboard si ya se creó el hábito
+    if st.button("Ver Dashboard"):
+        st.session_state.next_page = "dashboard"
+        st.experimental_rerun()  # Redirige al dashboard
