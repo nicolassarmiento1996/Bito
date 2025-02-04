@@ -57,6 +57,7 @@ def login():
             st.error("Usuario o contraseña incorrectos")
 
 # Función para la pantalla de crear hábito
+# Función para la pantalla de crear hábito
 def crear_habito():
     """Pantalla para crear hábitos"""
     st.title("Crear un Hábito")
@@ -73,15 +74,30 @@ def crear_habito():
     # Campo para la sanción
     sanction = st.text_input("Escribe una sanción en caso de no cumplir con el hábito")
 
-    # Botón para guardar el hábito
-    if st.button("Aceptar"):
+    # Botones para guardar el hábito y ver mis hábitos
+    col1, col2 = st.columns([3, 1])
+    if col1.button("Aceptar"):
         st.session_state.habit_name = habit_name
         st.session_state.days_of_week = days_of_week
         st.session_state.sanction = sanction
         st.success(f"Hábito {habit_name} creado exitosamente!")
+    
+    if col2.button("Ver mis hábitos"):
+        st.session_state.page = "dashboard"  # Cambiar a la pantalla de dashboard
 
 # Control de flujo: Mostrar la pantalla correcta según el estado
 if not st.session_state.logged_in:
     login()
 elif st.session_state.page == "crear_habito":
     crear_habito()
+elif st.session_state.page == "dashboard":
+    # Aquí debes agregar la función para mostrar la pantalla de dashboard
+    def dashboard():
+        st.title("Dashboard")
+        # Aquí debes agregar el código para mostrar los hábitos creados
+        st.write("Hábitos creados:")
+        st.write(st.session_state.habit_name)
+        st.write(st.session_state.days_of_week)
+        st.write(st.session_state.sanction)
+    
+    dashboard()
