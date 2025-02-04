@@ -11,6 +11,7 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
     st.session_state.pantalla = "login"
+    st.session_state.habitos = []
 
 # Fondo con la imagen y el color de texto blanco
 page_bg_img = """
@@ -47,22 +48,54 @@ def login():
     password = st.text_input("Contraseña", type="password")
 
     # Botón de iniciar sesión con HTML para cambiar el color
-    if st.markdown('<button style="color: black; background-color: #f0f0f0; border: none; padding: 10px 20px; font-size: 16px;">Iniciar sesión</button>', unsafe_allow_html=True):
+    if st.button("Iniciar sesión"):
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
             st.session_state.username = username
-            st.session_state.pantalla = "home"
+            st.session_state.pantalla = "crear_habito"
         else:
             st.error("Usuario o contraseña incorrectos")
 
-def home():
-    """Pantalla principal después de iniciar sesión"""
-    st.title(f" Bienvenido {st.session_state.username}")
-    st.write("¡Has iniciado sesión exitosamente!")
+def crear_habito():
+    """Función para crear un nuevo hábito"""
+    st.title("Crear Hábito")
 
+    # Campo para el nombre del hábito
+    nombre_habito = st.text_input("Nombre del hábito")
+
+    # Campo para seleccionar los días de la semana
+    dias_semana = st.multiselect("Días de la semana", ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"])
+
+    # Campo para la sanción
+    sancion = st.text_input("Sanción en caso de no realizar el hábito")
+
+    # Botón para aceptar
+    if st.button("Aceptar"):
+        # Agregar el hábito a la lista de hábitos
+        st.session_state.habitos.append({
+            "nombre": nombre_habito,
+            "dias_semana": dias_semana,
+            "sancion": sancion
+        })
+        st.success("Hábito creado exitosamente!")
+        st.session_state.pantalla = "dashboard"
+
+def dashboard():
+    """Función para mostrar el dashboard de hábitos"""
+    st.title("Dashboard de Hábitos")
+
+    # Mostrar la lista de hábitos
+    for i, habito in enumerate(st.session_state.habitos):
+        st.write(f"Hábito {i+1}: {habito['nombre']}")
+        st.write(f"Días de la semana: {', '.join(habito['dias_semana'])}")
+        st.write(f"Sanción: {habito['sancion']}")
+        st.write("---")
+
+    # Botón para crear un nuevo hábito
     if st.button("Crear Hábito"):
         st.session_state.pantalla = "crear_habito"
 
+    # Botón para cerrar sesión
     if st.button("Cerrar sesión"):
         st.session_state.logged_in = False
         st.session_state.username = ""
@@ -71,10 +104,10 @@ def home():
 def main():
     if st.session_state.pantalla == "login":
         login()
-    elif st.session_state.pantalla == "home":
-        home()
     elif st.session_state.pantalla == "crear_habito":
-        exec(open("crear_habito.py").read())
+        crear_habito()
+    elif st.session_state.pantalla == "dashboard":
+        dashboard()
 
 if __name__ == "__main__":
     main()
