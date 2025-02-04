@@ -21,7 +21,7 @@ st.markdown(
 
 def crear_habito():
     """Pantalla para crear un nuevo hábito"""
-    st.title("📝 Crear Hábito")
+    st.title(" Crear Hábito")
 
     with st.form("form_crear_habito"):
         # Campo para el nombre del hábito
@@ -36,7 +36,7 @@ def crear_habito():
         # Campo para la sanción
         sancion = st.text_input("Sanción en caso de no realizar el hábito")
 
-        # Botón de submit (✅ Se eliminó `style="color:black"`)
+        # Botón de submit 
         submit_button = st.form_submit_button("Aceptar")
 
         if submit_button:
@@ -47,35 +47,18 @@ def crear_habito():
                     "dias_semana": dias_semana,
                     "sancion": sancion
                 })
-                st.success("✅ Hábito creado exitosamente!")
+                st.success(" Hábito creado exitosamente!")
 
-                # Cambiar a la pantalla del dashboard
-                st.session_state.pantalla = "dashboard"
-                st.experimental_rerun()  # Recargar la página para mostrar la siguiente pantalla
             else:
-                st.error("⚠️ Debes ingresar un nombre de hábito y al menos un día.")
+                st.error(" Debes ingresar un nombre de hábito y al menos un día.")
+
+    # Botón para ver mis hábitos
+    st.button("Ver mis hábitos", on_click=lambda: cambiar_pantalla("dashboard"))
+
+def cambiar_pantalla(pantalla):
+    st.session_state.pantalla = pantalla
+    st.experimental_rerun()
 
 # Mostrar la pantalla solo si estamos en "crear_habito"
 if st.session_state.pantalla == "crear_habito":
     crear_habito()
-
-# Botones para guardar el hábito y ver mis hábitos
-col1, col2 = st.columns([3, 1])
-if col1.button("Aceptar"):
-    if nombre_habito and dias_semana:
-        # Agregar el hábito a la lista de hábitos
-        st.session_state.habitos.append({
-            "nombre": nombre_habito,
-            "dias_semana": dias_semana,
-            "sancion": sancion
-        })
-        st.success("Hábito creado exitosamente!")
-
-        # Cambiar a la pantalla del dashboard
-        st.session_state.pantalla = "dashboard"
-        st.experimental_rerun()  # Recargar la página para mostrar la siguiente pantalla
-    else:
-        st.error("Debes ingresar un nombre de hábito y al menos un día.")
-
-if col2.button("Ver mis hábitos", type="primary"):
-    st.session_state.pantalla = "dashboard"  # Cambiar a la pantalla de dashboard
