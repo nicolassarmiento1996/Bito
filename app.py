@@ -46,7 +46,7 @@ def login():
     password = st.text_input("Contraseña", type="password")
 
     # Botón de iniciar sesión con HTML para cambiar el color
-    if st.markdown('<button style="color: black; background-color: #f0f0f0; border: none; padding: 10px 20px; font-size: 16px;">Iniciar sesión</button>', unsafe_allow_html=True):
+    if st.button("Iniciar sesión"):
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
             st.session_state.username = username
