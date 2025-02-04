@@ -29,12 +29,7 @@ page_bg_img = """
 }
 
 h1, h2, h3, h4, h5, h6, p {
-    color: white; /* Asegura que todos los textos sean blancos, excepto el botón */
-}
-
-div.stButton > button {
-    color: black !important; /* Cambia el texto del botón a negro */
-    background-color: #f0f0f0; /* O cualquier otro color que prefieras */
+    color: white; /* Asegura que todos los textos sean blancos */
 }
 
 </style>
@@ -50,8 +45,8 @@ def login():
     username = st.text_input("Usuario")
     password = st.text_input("Contraseña", type="password")
 
-    # Botón de iniciar sesión
-    if st.button("Iniciar sesión"):
+    # Botón de iniciar sesión con HTML para cambiar el color
+    if st.markdown('<button style="color: black; background-color: #f0f0f0; border: none; padding: 10px 20px; font-size: 16px;">Iniciar sesión</button>', unsafe_allow_html=True):
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
             st.session_state.username = username
