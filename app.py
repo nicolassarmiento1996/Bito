@@ -10,7 +10,6 @@ USERS = {
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
-    st.session_state.page = "login"  # Asegurarse de que se inicie en la pantalla de login
 
 # Fondo con la imagen y el color de texto blanco
 page_bg_img = """
@@ -38,7 +37,6 @@ h1, h2, h3, h4, h5, h6, p {
 
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-# Función de inicio de sesión
 def login():
     """Función para manejar el inicio de sesión"""
     st.title(" Inicio de Sesión")
@@ -47,41 +45,31 @@ def login():
     username = st.text_input("Usuario")
     password = st.text_input("Contraseña", type="password")
 
-    # Botón de iniciar sesión
-    if st.button("Iniciar sesión"):
+    # Botón de iniciar sesión con HTML para cambiar el color
+    if st.markdown('<button style="color: black; background-color: #f0f0f0; border: none; padding: 10px 20px; font-size: 16px;">Iniciar sesión</button>', unsafe_allow_html=True):
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
             st.session_state.username = username
-            st.session_state.page = "crear_habito"  # Cambiar a la pantalla de crear hábito
+            st.success(f" Bienvenido, {username}!")
+            st.experimental_rerun()  # Recargar la página para mostrar la siguiente pantalla
         else:
             st.error("Usuario o contraseña incorrectos")
 
-# Función para la pantalla de crear hábito
-def crear_habito():
-    """Pantalla para crear hábitos"""
-    st.title("Crear un Hábito")
-    
-    # Campo para el nombre del hábito
-    habit_name = st.text_input("Nombre del hábito")
+def home():
+    """Pantalla principal después de iniciar sesión"""
+    st.title(f" Bienvenido {st.session_state.username}")
+    st.write("¡Has iniciado sesión exitosamente!")
 
-    # Selección de días de la semana
-    days_of_week = st.multiselect(
-        "Selecciona los días de la semana",
-        ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
-    )
-    
-    # Campo para la sanción
-    sanction = st.text_input("Escribe una sanción en caso de no cumplir con el hábito")
+    if st.button("Crear Hábito"):
+        st.session_state.pantalla = "crear_habito"
 
-    # Botón para guardar el hábito
-    if st.button("Aceptar"):
-        st.session_state.habit_name = habit_name
-        st.session_state.days_of_week = days_of_week
-        st.session_state.sanction = sanction
-        st.success(f"Hábito {habit_name} creado exitosamente!")
+    if st.button("Cerrar sesión"):
+        st.session_state.logged_in = False
+        st.session_state.username = ""
+        st.experimental_rerun()
 
-# Control de flujo: Mostrar la pantalla correcta según el estado
+# Control de flujo: Mostrar la pantalla de login si no está autenticado
 if not st.session_state.logged_in:
     login()
-elif st.session_state.page == "crear_habito":
-    crear_habito()
+else:
+    home()
