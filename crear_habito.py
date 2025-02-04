@@ -7,6 +7,18 @@ if "habitos" not in st.session_state:
 if "pantalla" not in st.session_state:
     st.session_state.pantalla = "crear_habito"
 
+# Aplicar estilos CSS para el botón
+st.markdown(
+    """
+    <style>
+    div.stButton > button {
+        color: black !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 def crear_habito():
     """Función para crear un nuevo hábito"""
     st.title("Crear Hábito")
@@ -18,17 +30,17 @@ def crear_habito():
         # Campo para seleccionar los días de la semana (en formato horizontal)
         dias_semana = st.multiselect(
             "Días de la semana",
-            ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
-            default=[],
+            ["L", "M", "X", "J", "V", "S", "D"],
+            default=[]
         )
 
         # Campo para la sanción
         sancion = st.text_input("Sanción en caso de no realizar el hábito")
 
         # Botón para aceptar dentro del formulario
-        submit = st.form_submit_button("Aceptar")
+        submit_button = st.form_submit_button("Aceptar")
 
-        if submit:
+        if submit_button:
             if nombre_habito and dias_semana:
                 # Agregar el hábito a la lista de hábitos
                 st.session_state.habitos.append({
