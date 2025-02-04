@@ -11,7 +11,7 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
 
-# Agregar fondo de imagen de bienestar
+# Agregar fondo de imagen de bienestar con CSS
 st.markdown(
     """
     <style>
@@ -19,7 +19,7 @@ st.markdown(
         background: url('https://images.unsplash.com/photo-1574764199913-df05b1e03b0e') no-repeat center center fixed;
         background-size: cover;
         height: 100vh;  # Asegura que ocupe toda la ventana
-        color: white;   # Opcional: cambiar el color del texto
+        color: white;   # Opcional: cambiar el color del texto para hacerlo legible sobre el fondo
     }
     .sidebar-content {
         background: rgba(0, 0, 0, 0.5);  # Fondo oscuro para la barra lateral
@@ -27,10 +27,6 @@ st.markdown(
     </style>
     """,
     unsafe_allow_html=True
-)
-
-# Tu código para la app aquí...
-
 )
 
 def login():
