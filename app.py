@@ -10,7 +10,6 @@ USERS = {
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
-    st.session_state.page = "login"  # Página inicial
 
 # Fondo con la imagen y el color de texto blanco
 page_bg_img = """
@@ -47,7 +46,7 @@ def login():
     username = st.text_input("Usuario")
     password = st.text_input("Contraseña", type="password")
 
-    # Botón de iniciar sesión con HTML para cambiar el color
+    # Botón de iniciar sesión
     if st.button("Iniciar sesión"):
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
@@ -80,7 +79,6 @@ def crear_habito():
         st.session_state.days_of_week = days_of_week
         st.session_state.sanction = sanction
         st.session_state.page = "dashboard"  # Redirigir al dashboard
-
         st.success(f"¡Hábito {habit_name} creado exitosamente!")
 
 # Función para el dashboard
@@ -102,7 +100,16 @@ def dashboard():
 # Control de flujo: Mostrar la pantalla correcta según el estado
 if not st.session_state.logged_in:
     login()
-elif st.session_state.page == "crear_habito":
-    crear_habito()
-elif st.session_state.page == "dashboard":
-    dashboard()
+else:
+    # Usar st.radio para navegar entre las páginas después de iniciar sesión
+    page = st.radio("Seleccione una opción", ("Crear hábito", "Dashboard", "Cerrar sesión"))
+
+    if page == "Crear hábito":
+        crear_habito()
+    elif page == "Dashboard":
+        dashboard()
+    elif page == "Cerrar sesión":
+        st.session_state.logged_in = False
+        st.session_state.username = ""
+        st.session_state.page = "login"  # Regresar a login
+        st.experimental_rerun()  # Recargar para mostrar la pantalla de login
