@@ -50,7 +50,7 @@ def login():
     with st.form("login_form"):
         username = st.text_input("Usuario")
         password = st.text_input("Contraseña", type="password")
-        submit_button = st.form_submit_button("Iniciar sesión")
+        submit_button = st.form_submit_button("Iniciar sesión", style="color:black")
 
         if submit_button:
             if username in USERS and USERS[username] == password:
@@ -69,7 +69,7 @@ def crear_habito():
         nombre_habito = st.text_input("Nombre del hábito")
         dias_semana = st.multiselect("Días de la semana", ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"])
         sancion = st.text_input("Sanción en caso de no realizar el hábito")
-        submit_button = st.form_submit_button("Aceptar")
+        submit_button = st.form_submit_button("Aceptar", style="color:black")
 
         if submit_button:
             # Agregar el hábito a la lista de hábitos
@@ -94,14 +94,14 @@ def dashboard():
 
     # Botón para crear un nuevo hábito
     with st.form("dashboard_form"):
-        submit_button = st.form_submit_button("Crear Hábito")
+        submit_button = st.form_submit_button("Crear Hábito", style="color:black")
 
         if submit_button:
             st.session_state.pantalla = "crear_habito"
 
     # Botón para cerrar sesión
     with st.form("cerrar_sesion_form"):
-        submit_button = st.form_submit_button("Cerrar sesión")
+        submit_button = st.form_submit_button("Cerrar sesión", style="color:black")
 
         if submit_button:
             st.session_state.logged_in = False
