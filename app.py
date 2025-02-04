@@ -16,10 +16,10 @@ st.markdown(
     """
     <style>
     .reportview-container {
-        background: url('https://images.unsplash.com/photo-1574764199913-df05b1e03b0e') no-repeat center center fixed;
+        background: url('https://mejorconsalud.as.com/wp-content/uploads/2023/12/wellness-tendencias-2024-scaled.jpg') no-repeat center center fixed;
         background-size: cover;
         height: 100vh;
-        color: white;   # Cambiar el color del texto a blanco
+        color: white;   # Cambiar el color del texto a blanco para que sea legible
     }
     .sidebar-content {
         background: rgba(0, 0, 0, 0.5);  # Fondo oscuro para la barra lateral
