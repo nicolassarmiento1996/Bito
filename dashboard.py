@@ -1,43 +1,37 @@
 import streamlit as st
-import datetime
+import pandas as pd
+import plotly.express as px
 
-# Función de cierre de sesión
-def logout():
-    """Cerrar sesión"""
-    st.session_state.logged_in = False
-    st.session_state.username = ""
-    st.session_state.next_page = ""  # Limpiar la página a redirigir
-    st.experimental_rerun()
+# Fondo con la imagen y el color de texto blanco
+page_bg_img = """
+<style>
+[data-testid="stAppViewContainer"] {
+    background-image: url("https://img.freepik.com/foto-gratis/personas-que-toman-clases-pilates-reformador_23-2151093272.jpg?t=st=1738638246~exp=1738641846~hmac=c98b8738e3217cfda46863036a62ca7f8745ab9d61d03d3e99de187a0da9ea6a&w=2000");
+    background-size: cover;
+    color: white;  /* Establecer color blanco para el texto */
+}
 
-# Mostrar el botón de cerrar sesión en la parte superior derecha
-if st.session_state.logged_in:
-    st.sidebar.button("Cerrar sesión", on_click=logout)
+[data-testid="stHeader"] {
+    background-color: rgba(0, 0, 0, 0);
+}
 
-# Verificar si el usuario está autenticado
-if not st.session_state.logged_in:
-    st.write("Por favor, inicia sesión para continuar.")
-else:
+[data-testid="stToolbar"] {
+    right: 2rem;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    color: white; /* Asegura que todos los textos sean blancos */
+}
+
+</style>
+"""
+
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
+def dashboard():
     st.title("📊 Dashboard de Hábitos")
 
-    # Mostrar los hábitos registrados
-    if "habits" in st.session_state and st.session_state.habits:
-        for habit in st.session_state.habits:
-            st.subheader(habit["habit_name"])
-            st.write(f"Días seleccionados: {', '.join(habit['selected_days'])}")
-            st.write(f"Sanción: {habit['penalty']}")
-
-            # Mostrar progreso
-            today = datetime.datetime.today().strftime('%A')[:1]  # Día de la semana en formato L, M, X...
-            if today in habit['selected_days']:
-                st.success(f"✔️ ¡Hoy estás cumpliendo con tu hábito!")
-            else:
-                st.warning(f"⚠️ Hoy no estás cumpliendo con este hábito.")
-
-            st.write("---")
-
-        # Agregar una función para resetear los hábitos o mostrar el progreso de todos
-        if st.button("Ver progreso general"):
-            st.write("🔄 Aquí se podría mostrar un gráfico de progreso similar a Strava.")
-            # Esta es una idea para expandir con gráficos de barras o líneas usando la librería `matplotlib` o `plotly`.
+    if not st.session_state.habitos:
+        st.warning("No hay hábitos registrados.")
     else:
-        st.write("No tienes hábitos registrados aún.")
+        # Mostrar cada hábito con su progreso
