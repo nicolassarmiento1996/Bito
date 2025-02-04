@@ -95,25 +95,22 @@ def dashboard():
     st.write(st.session_state.sanction)
     
     # Tabla de seguimiento de los días
-    st.write("Tabla de seguimiento de los días:")
     dias_semana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
-    tabla_seguimiento = []
     
     # Crear una lista para almacenar los días que se han cumplido
     if "dias_cumplidos" not in st.session_state:
         st.session_state.dias_cumplidos = [False] * len(dias_semana)
     
-    # Crear la tabla de seguimiento
-    for i, dia in enumerate(dias_semana):
-        tabla_seguimiento.append([dia, st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}")])
+    # Botón para guardar los cambios
+    if st.button("Guardar cambios"):
+        dias_cumplidos = [st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}") for i, dia in enumerate(dias_semana)]
+        st.session_state.dias_cumplidos = dias_cumplidos
+        st.success("Cambios guardados exitosamente!")
     
     # Mostrar la tabla de seguimiento
+    dias_cumplidos = [st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}") for i, dia in enumerate(dias_semana)]
+    tabla_seguimiento = [[dia, cumplido] for dia, cumplido in zip(dias_semana, dias_cumplidos)]
     st.table(tabla_seguimiento)
-    
-        # Botón para guardar los cambios
-    if st.button("Guardar cambios"):
-        st.session_state.dias_cumplidos = [tabla_seguimiento[i][1] for i in range(len(dias_semana))]
-        st.success("Cambios guardados exitosamente!")
 
 # Control de flujo: Mostrar la pantalla correcta según el estado
 if not st.session_state.logged_in:
