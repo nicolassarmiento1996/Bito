@@ -24,7 +24,7 @@ page_bg_img = """
 }
 
 [data-testid="stButton"] {
-    color: black;
+    color: black;  /* Cambié el color del texto a negro */
     background-color: #f0f0f0;
     border-radius: 50px;
     padding: 10px 20px;
@@ -41,6 +41,11 @@ page_bg_img = """
 
 h1, h2, h3, h4, h5, h6, p {
     color: white;
+}
+
+/* Eliminando la barra que se superpone debajo del botón */
+[data-testid="stAppViewContainer"] {
+    padding-bottom: 0 !important;
 }
 </style>
 """
