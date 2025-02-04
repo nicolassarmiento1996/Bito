@@ -11,22 +11,25 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
 
-# Agregar fondo de gradiente con CSS
-st.markdown(
-    """
-    <style>
-    .reportview-container {
-        background: linear-gradient(to bottom, #A8D0E6, #FFFFFF); /* Azul pastel a blanco */
-        height: 100vh;
-        color: black;   /* Color de texto negro para mayor legibilidad */
-    }
-    .sidebar-content {
-        background: rgba(0, 0, 0, 0.5);  /* Fondo oscuro para la barra lateral */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+page_bg_img = """
+<style>
+[data-testid="stAppViewContainer"] {
+background-image: url("https://images.unsplash.com/photo-1501426026826-1c6920629a27?ixlib=rb-4.0.3&ixid=M3yMDJBI7w3LCjMkV3PDN8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80");
+background-size: cover;
+}
+
+[data-testid="stHeader"] {
+background-color: rgba(0, 0, 0, 0);
+}
+
+[data-testid="stToolbar"] {
+right: 2rem;
+}
+</style>
+"""
+
+st.markdown(page_bg_img, unsafe_allow_html=True)
+st.title("It's summer!")
 
 def login():
     """Función para manejar el inicio de sesión"""
