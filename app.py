@@ -55,18 +55,20 @@ def login():
         else:
             st.error("❌ Usuario o contraseña incorrectos")
 
-def home():
-    """Pantalla principal después de iniciar sesión"""
-    st.title(f"🎉 Bienvenido {st.session_state.username}")
-    st.write("¡Has iniciado sesión exitosamente!")
+def logout():
+    """Función de cierre de sesión"""
+    st.session_state.logged_in = False
+    st.session_state.username = ""
+    st.experimental_rerun()
 
-    if st.button("Cerrar sesión"):
-        st.session_state.logged_in = False
-        st.session_state.username = ""
-        st.experimental_rerun()
+# Agregar un botón de cerrar sesión en la parte superior derecha
+if st.session_state.logged_in:
+    st.sidebar.button("Cerrar sesión", on_click=logout)
 
 # Control de flujo: Mostrar la pantalla de login si no está autenticado
 if not st.session_state.logged_in:
     login()
 else:
-    home()
+    # Si el usuario está autenticado, redirigir a la página de creación de hábitos
+    st.write("Redirigiendo a la página de creación de hábitos...")
+    st.experimental_rerun()  # Redirige al flujo de la pantalla de creación de hábitos
