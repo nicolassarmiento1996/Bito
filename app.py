@@ -34,7 +34,7 @@ h1, h2, h3, h4, h5, h6, p {
     color: white; /* Asegura que todos los textos sean blancos */
 }
 
-button {
+.stButton > button {
     color: black; /* Establecer color negro para el texto de los botones */
 }
 </style>
