@@ -86,6 +86,7 @@ def crear_habito():
 
 # Función para mostrar la pantalla de dashboard
 # Función para mostrar la pantalla de dashboard
+# Función para mostrar la pantalla de dashboard
 def dashboard():
     st.title("Dashboard")
     
@@ -105,7 +106,7 @@ def dashboard():
     # Mostrar la tabla de seguimiento
     tabla_seguimiento = []
     for i, dia in enumerate(dias_semana):
-        tabla_seguimiento.append([dia, st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}")])
+        tabla_seguimiento.append([dia, st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}", value=st.session_state.dias_cumplidos[i])])
     
     # Botón para guardar los cambios
     if st.button("Guardar cambios"):
@@ -114,3 +115,11 @@ def dashboard():
     
     # Mostrar la tabla de seguimiento
     st.table(tabla_seguimiento)
+
+# Control de flujo: Mostrar la pantalla correcta según el estado
+if not st.session_state.logged_in:
+    login()
+elif st.session_state.page == "crear_habito":
+    crear_habito()
+elif st.session_state.page == "dashboard":
+    dashboard()
