@@ -1,43 +1,73 @@
 import streamlit as st
 
-# Variables globales para almacenar hábitos
-if "habitos" not in st.session_state:
-    st.session_state.habitos = []
+# Simulación de usuarios registrados
+USERS = {
+    "admin": "1234",
+    "usuario1": "contraseña123",
+}
 
-def crear_habito():
-    """Pantalla para crear un nuevo hábito"""
-    st.title("📅 Crear Nuevo Hábito")
+# Variables de sesión
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+    st.session_state.username = ""
 
-    # Nombre del hábito
-    habit_name = st.text_input("¿Qué hábito deseas crear?", "")
+if "screen" not in st.session_state:
+    st.session_state.screen = "login"  # Pantalla inicial es el login
 
-    # Selección de días de la semana
-    st.write("Selecciona los días de la semana para realizar tu hábito:")
-    days_of_week = ["L", "M", "X", "J", "V", "S", "D"]
-    selected_days = []
+# Fondo con la imagen y el color de texto blanco
+page_bg_img = """
+<style>
+[data-testid="stAppViewContainer"] {
+    background-image: url("https://img.freepik.com/foto-gratis/personas-que-toman-clases-pilates-reformador_23-2151093272.jpg?t=st=1738638246~exp=1738641846~hmac=c98b8738e3217cfda46863036a62ca7f8745ab9d61d03d3e99de187a0da9ea6a&w=2000");
+    background-size: cover;
+    color: white;
+}
 
-    # Crear botones para seleccionar los días
-    for day in days_of_week:
-        if st.button(day, key=day):
-            selected_days.append(day)
+[data-testid="stButton"] {
+    color: black;  /* Cambié el color del texto a negro */
+    background-color: #f0f0f0;
+    border-radius: 50px;
+    padding: 10px 20px;
+    margin: 5px;
+}
 
-    # Sanción
-    sanction = st.text_area("Escribe una sanción si no realizas el hábito:")
+[data-testid="stHeader"] {
+    background-color: rgba(0, 0, 0, 0);
+}
 
-    # Aceptar y guardar el hábito
-    if st.button("Aceptar"):
-        if habit_name and selected_days and sanction:
-            new_habit = {
-                "name": habit_name,
-                "days": selected_days,
-                "sanction": sanction
-            }
-            st.session_state.habitos.append(new_habit)
-            st.success(f"✅ Hábito '{habit_name}' creado con éxito!")
-            st.experimental_rerun()  # Recargar para pasar a la siguiente pantalla
+[data-testid="stToolbar"] {
+    right: 2rem;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    color: white;
+}
+
+/* Eliminando la barra que se superpone debajo del botón */
+[data-testid="stAppViewContainer"] {
+    padding-bottom: 0 !important;
+}
+</style>
+"""
+
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
+# Función de login
+def login():
+    st.title("🔐 Inicio de Sesión")
+
+    # Campos de inicio de sesión
+    username = st.text_input("Usuario")
+    password = st.text_input("Contraseña", type="password")
+
+    # Botón de iniciar sesión
+    if st.button("Iniciar sesión"):
+        if username in USERS and USERS[username] == password:
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.session_state.screen = "crear_habito"  # Cambiar a la pantalla de crear hábito
         else:
-            st.error("❌ Por favor, completa todos los campos")
+            st.error("❌ Usuario o contraseña incorrectos")
 
-# Llamar a la función para crear un hábito
-crear_habito()
-
+# Control de flujo de la aplicación
+login()
