@@ -14,7 +14,7 @@ if "logged_in" not in st.session_state:
 page_bg_img = """
 <style>
 [data-testid="stAppViewContainer"] {
-background-image: url("https://images.unsplash.com/photo-1501426026826-1c6920629a27?ixlib=rb-4.0.3&ixid=M3yMDJBI7w3LCjMkV3PDN8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80");
+background-image: url("https://mejorconsalud.as.com/wp-content/uploads/2023/12/wellness-tendencias-2024-scaled.jpg");
 background-size: cover;
 }
 
