@@ -1,7 +1,19 @@
 import streamlit as st
 import datetime
 
-# Si no estás autenticado, redirige al login
+# Función de cierre de sesión
+def logout():
+    """Cerrar sesión"""
+    st.session_state.logged_in = False
+    st.session_state.username = ""
+    st.session_state.next_page = ""  # Limpiar la página a redirigir
+    st.experimental_rerun()
+
+# Mostrar el botón de cerrar sesión en la parte superior derecha
+if st.session_state.logged_in:
+    st.sidebar.button("Cerrar sesión", on_click=logout)
+
+# Verificar si el usuario está autenticado
 if not st.session_state.logged_in:
     st.write("Por favor, inicia sesión para continuar.")
 else:
@@ -29,4 +41,3 @@ else:
             # Esta es una idea para expandir con gráficos de barras o líneas usando la librería `matplotlib` o `plotly`.
     else:
         st.write("No tienes hábitos registrados aún.")
-
