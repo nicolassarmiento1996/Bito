@@ -41,7 +41,7 @@ st.markdown(page_bg_img, unsafe_allow_html=True)
 # Función de inicio de sesión
 def login():
     """Función para manejar el inicio de sesión"""
-    st.title("🔐 Inicio de Sesión")
+    st.title(" Inicio de Sesión")
 
     # Campos de inicio de sesión
     username = st.text_input("Usuario")
@@ -53,14 +53,14 @@ def login():
             st.session_state.logged_in = True
             st.session_state.username = username
             st.session_state.page = "crear_habito"  # Página siguiente
-            st.success(f"✅ Bienvenido, {username}!")
+            st.success(f"Bienvenido, {username}!")
         else:
-            st.error("❌ Usuario o contraseña incorrectos")
+            st.error("Usuario o contraseña incorrectos")
 
 # Función para la página de creación de hábitos
 def crear_habito():
     """Pantalla para crear hábitos"""
-    st.title("✍️ Crear un Hábito")
+    st.title("Crear un Hábito")
     
     # Campo para el nombre del hábito
     habit_name = st.text_input("Nombre del hábito")
@@ -80,12 +80,12 @@ def crear_habito():
         st.session_state.days_of_week = days_of_week
         st.session_state.sanction = sanction
         st.session_state.page = "dashboard"  # Redirigir al dashboard
-        st.success(f"¡Hábito {habit_name} creado exitosamente!")
+        st.success(f"Hábito {habit_name} creado exitosamente!")
 
 # Función para el dashboard
 def dashboard():
     """Pantalla del Dashboard"""
-    st.title(f"📊 Dashboard de {st.session_state.username}")
+    st.title(f"Dashboard de {st.session_state.username}")
 
     st.write(f"Hábito: {st.session_state.habit_name}")
     st.write(f"Días de la semana: {', '.join(st.session_state.days_of_week)}")
@@ -102,9 +102,9 @@ if not st.session_state.logged_in:
     login()
 else:
     # Usar st.radio para navegar entre las páginas después de iniciar sesión
-    if st.session_state.page == "login":
-        login()
-    elif st.session_state.page == "crear_habito":
+    page = st.radio("Menú", ["Crear hábito", "Dashboard"])
+    
+    if page == "Crear hábito":
         crear_habito()
-    elif st.session_state.page == "dashboard":
+    elif page == "Dashboard":
         dashboard()
