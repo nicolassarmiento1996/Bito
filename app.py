@@ -17,7 +17,7 @@ if "logged_in" not in st.session_state:
 page_bg_img = """
 <style>
 [data-testid="stAppViewContainer"] {
-    background-image: url("https://images.pexels.com/photos/13904988/pexels-photo-13904988.jpeg?auto=compress&cs=tinysrgb&w=600");
+    background-image: url("https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
     background-size: cover;
     color: white;  /* Establecer color blanco para el texto */
 }
