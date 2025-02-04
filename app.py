@@ -52,12 +52,36 @@ def login():
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
             st.session_state.username = username
-            # Redirigir a crear_habito.py
-            import webbrowser
-            webbrowser.open("http://localhost:8501/crear_habito.py")
+            st.session_state.page = "crear_habito"  # Cambiar a la pantalla de crear hábito
         else:
             st.error("Usuario o contraseña incorrectos")
+
+# Función para la pantalla de crear hábito
+def crear_habito():
+    """Pantalla para crear hábitos"""
+    st.title("Crear un Hábito")
+    
+    # Campo para el nombre del hábito
+    habit_name = st.text_input("Nombre del hábito")
+
+    # Selección de días de la semana
+    days_of_week = st.multiselect(
+        "Selecciona los días de la semana",
+        ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
+    )
+    
+    # Campo para la sanción
+    sanction = st.text_input("Escribe una sanción en caso de no cumplir con el hábito")
+
+    # Botón para guardar el hábito
+    if st.button("Aceptar"):
+        st.session_state.habit_name = habit_name
+        st.session_state.days_of_week = days_of_week
+        st.session_state.sanction = sanction
+        st.success(f"Hábito {habit_name} creado exitosamente!")
 
 # Control de flujo: Mostrar la pantalla correcta según el estado
 if not st.session_state.logged_in:
     login()
+elif st.session_state.page == "crear_habito":
+    crear_habito()
