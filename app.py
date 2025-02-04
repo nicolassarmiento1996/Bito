@@ -11,6 +11,9 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
 
+if "screen" not in st.session_state:
+    st.session_state.screen = "login"  # Pantalla inicial es el login
+
 # Fondo con la imagen y el color de texto blanco
 page_bg_img = """
 <style>
@@ -49,13 +52,67 @@ def login():
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
             st.session_state.username = username
-            st.success(f"✅ Bienvenido, {username}!")
-            st.experimental_rerun()  # Recargar la página para pasar a la siguiente pantalla
+            st.session_state.screen = "crear_habito"  # Cambiar a la pantalla de crear hábito
         else:
             st.error("❌ Usuario o contraseña incorrectos")
 
-# Si el usuario no está logueado, mostrar la pantalla de login
-if not st.session_state.logged_in:
+# Función de creación de hábito
+def crear_habito():
+    """Pantalla para crear un nuevo hábito"""
+    st.title("📅 Crear Nuevo Hábito")
+
+    # Nombre del hábito
+    habit_name = st.text_input("¿Qué hábito deseas crear?", "")
+
+    # Selección de días de la semana
+    st.write("Selecciona los días de la semana para realizar tu hábito:")
+    days_of_week = ["L", "M", "X", "J", "V", "S", "D"]
+    selected_days = []
+
+    # Crear botones para seleccionar los días
+    for day in days_of_week:
+        if st.button(day, key=day):
+            selected_days.append(day)
+
+    # Sanción
+    sanction = st.text_area("Escribe una sanción si no realizas el hábito:")
+
+    # Aceptar y guardar el hábito
+    if st.button("Aceptar"):
+        if habit_name and selected_days and sanction:
+            new_habit = {
+                "name": habit_name,
+                "days": selected_days,
+                "sanction": sanction
+            }
+            if "habitos" not in st.session_state:
+                st.session_state.habitos = []
+            st.session_state.habitos.append(new_habit)
+            st.session_state.screen = "dashboard"  # Cambiar a la pantalla de dashboard
+
+# Función de dashboard
+def dashboard():
+    """Pantalla de Dashboard"""
+    st.title("📊 Dashboard de Hábitos")
+
+    # Si no hay hábitos, mostrar mensaje
+    if not st.session_state.habitos:
+        st.write("No tienes hábitos registrados aún.")
+    else:
+        # Mostrar todos los hábitos
+        for habit in st.session_state.habitos:
+            st.write(f"**Hábito**: {habit['name']}")
+            st.write(f"**Días**: {', '.join(habit['days'])}")
+            st.write(f"**Sanción**: {habit['sanction']}")
+            st.write("---")
+
+    if st.button("Crear nuevo hábito"):
+        st.session_state.screen = "crear_habito"  # Volver a la pantalla de creación de hábitos
+
+# Control de flujo de la aplicación
+if st.session_state.screen == "login":
     login()
-else:
-    st.experimental_rerun()  # Si está logueado, hacer rerun para cargar la siguiente pantalla
+elif st.session_state.screen == "crear_habito":
+    crear_habito()
+elif st.session_state.screen == "dashboard":
+    dashboard()
