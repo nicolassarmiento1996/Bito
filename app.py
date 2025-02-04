@@ -11,31 +11,15 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
 
-# Agregar fondo de imagen con CSS
-st.markdown(
-    """
-    <style>
-    .reportview-container {
-        background: url('https://images.unsplash.com/photo-1601091829279-960fd5b07334') no-repeat center center fixed;
-        background-size: cover;
-        height: 100vh;
-        color: white;
-    }
-    .sidebar-content {
-        background: rgba(0, 0, 0, 0.5);  # Fondo oscuro para la barra lateral
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 def login():
     """Función para manejar el inicio de sesión"""
     st.title("🔐 Inicio de Sesión")
 
+    # Campos de inicio de sesión
     username = st.text_input("Usuario")
     password = st.text_input("Contraseña", type="password")
 
+    # Botón de iniciar sesión
     if st.button("Iniciar sesión"):
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
@@ -44,6 +28,9 @@ def login():
             st.experimental_rerun()  # Recargar la página para mostrar la siguiente pantalla
         else:
             st.error("❌ Usuario o contraseña incorrectos")
+
+    # Mostrar imagen debajo del botón de inicio de sesión
+    st.image('https://mejorconsalud.as.com/wp-content/uploads/2023/12/wellness-tendencias-2024-scaled.jpg', use_column_width=True)
 
 def home():
     """Pantalla principal después de iniciar sesión"""
