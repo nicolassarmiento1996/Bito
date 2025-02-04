@@ -30,10 +30,6 @@ page_bg_img = """
     right: 2rem;
 }
 
-h1, h2, h4, h5, h6, p {
-    color: white; /* Asegura que todos los textos sean blancos */
-}
-
 .stButton > button {
     color: black; /* Establecer color negro para el texto de los botones */
 }
