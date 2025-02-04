@@ -10,6 +10,7 @@ USERS = {
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
+    st.session_state.page = "login"  # Asegurarse de que se inicie en la pantalla de login
 
 # Fondo con la imagen y el color de texto blanco
 page_bg_img = """
@@ -37,46 +38,26 @@ h1, h2, h3, h4, h5, h6, p {
 
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
+# Función de inicio de sesión
 def login():
     """Función para manejar el inicio de sesión"""
-    st.title("🔐 Inicio de Sesión")
+    st.title(" Inicio de Sesión")
 
     # Campos de inicio de sesión
     username = st.text_input("Usuario")
     password = st.text_input("Contraseña", type="password")
 
-    # Botón de iniciar sesión con HTML para cambiar el color
-    if st.markdown('<button style="color: black; background-color: #f0f0f0; border: none; padding: 10px 20px; font-size: 16px;">Iniciar sesión</button>', unsafe_allow_html=True):
+    # Botón de iniciar sesión
+    if st.button("Iniciar sesión"):
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
             st.session_state.username = username
-            st.success(f"✅ Bienvenido, {username}!")
-            st.experimental_rerun()  # Recargar la página para mostrar la siguiente pantalla
+            # Redirigir a crear_habito.py
+            import webbrowser
+            webbrowser.open("http://localhost:8501/crear_habito.py")
         else:
-            st.error("❌ Usuario o contraseña incorrectos")
+            st.error("Usuario o contraseña incorrectos")
 
-def home():
-    """Pantalla principal después de iniciar sesión"""
-    st.title(f"🎉 Bienvenido {st.session_state.username}")
-    st.write("¡Has iniciado sesión exitosamente!")
-
-    # Botón para ir a la pantalla de creación de hábitos
-    if st.button("Crear un nuevo hábito"):
-        st.session_state.current_page = "crear_habito"
-        st.experimental_rerun()
-
-    # Botón para ir al dashboard
-    if st.button("Ver Dashboard"):
-        st.session_state.current_page = "dashboard"
-        st.experimental_rerun()
-
-    if st.button("Cerrar sesión"):
-        st.session_state.logged_in = False
-        st.session_state.username = ""
-        st.experimental_rerun()
-
-# Control de flujo: Mostrar la pantalla de login si no está autenticado
+# Control de flujo: Mostrar la pantalla correcta según el estado
 if not st.session_state.logged_in:
     login()
-else:
-    home()
