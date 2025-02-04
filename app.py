@@ -33,7 +33,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 /* Cambiar color del texto del botón de "Iniciar sesión" */
-div.stButton > button {
+button[kind="primary"] {
     color: black !important;
 }
 
@@ -75,3 +75,4 @@ if not st.session_state.logged_in:
     login()
 else:
     home()
+
