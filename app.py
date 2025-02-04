@@ -51,6 +51,7 @@ def login():
             st.session_state.logged_in = True
             st.session_state.username = username
             st.success(f"✅ Bienvenido, {username}!")
+            st.session_state.next_page = "crear_habito"  # Indicamos que la siguiente página es la de creación de hábitos
             st.experimental_rerun()  # Recargar la página para mostrar la siguiente pantalla
         else:
             st.error("❌ Usuario o contraseña incorrectos")
@@ -59,6 +60,7 @@ def logout():
     """Función de cierre de sesión"""
     st.session_state.logged_in = False
     st.session_state.username = ""
+    st.session_state.next_page = ""  # Limpiamos la página a redirigir
     st.experimental_rerun()
 
 # Agregar un botón de cerrar sesión en la parte superior derecha
@@ -69,6 +71,9 @@ if st.session_state.logged_in:
 if not st.session_state.logged_in:
     login()
 else:
-    # Si el usuario está autenticado, redirigir a la página de creación de hábitos
-    st.write("Redirigiendo a la página de creación de hábitos...")
-    st.experimental_rerun()  # Redirige al flujo de la pantalla de creación de hábitos
+    # Verificar la página que se debe mostrar según el flujo
+    if st.session_state.next_page == "crear_habito":
+        st.experimental_rerun()  # Redirige a la página de creación de hábitos
+    else:
+        st.write("Redirigiendo a la página de creación de hábitos...")
+        st.experimental_rerun()
