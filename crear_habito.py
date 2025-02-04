@@ -59,13 +59,23 @@ def crear_habito():
 if st.session_state.pantalla == "crear_habito":
     crear_habito()
 
-# Botón para guardar el hábito
+# Botones para guardar el hábito y ver mis hábitos
 col1, col2 = st.columns([3, 1])
 if col1.button("Aceptar"):
-    st.session_state.habit_name = habit_name
-    st.session_state.days_of_week = days_of_week
-    st.session_state.sanction = sanction
-    st.success(f"Hábito {habit_name} creado exitosamente!")
-    
+    if nombre_habito and dias_semana:
+        # Agregar el hábito a la lista de hábitos
+        st.session_state.habitos.append({
+            "nombre": nombre_habito,
+            "dias_semana": dias_semana,
+            "sancion": sancion
+        })
+        st.success("Hábito creado exitosamente!")
+
+        # Cambiar a la pantalla del dashboard
+        st.session_state.pantalla = "dashboard"
+        st.experimental_rerun()  # Recargar la página para mostrar la siguiente pantalla
+    else:
+        st.error("Debes ingresar un nombre de hábito y al menos un día.")
+
 if col2.button("Ver mis hábitos", type="primary"):
-    st.session_state.page = "dashboard"  # Cambiar a la pantalla de dashboard
+    st.session_state.pantalla = "dashboard"  # Cambiar a la pantalla de dashboard
