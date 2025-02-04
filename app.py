@@ -48,41 +48,39 @@ def login():
     st.title(" Inicio de Sesión")
 
     # Campos de inicio de sesión
-    username = st.text_input("Usuario")
-    password = st.text_input("Contraseña", type="password")
+    with st.form("login_form"):
+        username = st.text_input("Usuario")
+        password = st.text_input("Contraseña", type="password")
+        submit_button = st.form_submit_button("Iniciar sesión")
 
-    # Botón de iniciar sesión
-    if st.button("Iniciar sesión", key="iniciar_sesion"):
-        if username in USERS and USERS[username] == password:
-            st.session_state.logged_in = True
-            st.session_state.username = username
-            st.session_state.pantalla = "crear_habito"
-        else:
-            st.error("Usuario o contraseña incorrectos")
+        if submit_button:
+            if username in USERS and USERS[username] == password:
+                st.session_state.logged_in = True
+                st.session_state.username = username
+                st.session_state.pantalla = "crear_habito"
+            else:
+                st.error("Usuario o contraseña incorrectos")
 
 def crear_habito():
     """Función para crear un nuevo hábito"""
     st.title("Crear Hábito")
 
     # Campo para el nombre del hábito
-    nombre_habito = st.text_input("Nombre del hábito")
+    with st.form("crear_habito_form"):
+        nombre_habito = st.text_input("Nombre del hábito")
+        dias_semana = st.multiselect("Días de la semana", ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"])
+        sancion = st.text_input("Sanción en caso de no realizar el hábito")
+        submit_button = st.form_submit_button("Aceptar")
 
-    # Campo para seleccionar los días de la semana
-    dias_semana = st.multiselect("Días de la semana", ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"])
-
-    # Campo para la sanción
-    sancion = st.text_input("Sanción en caso de no realizar el hábito")
-
-    # Botón para aceptar
-    if st.button("Aceptar", key="aceptar_habito"):
-        # Agregar el hábito a la lista de hábitos
-        st.session_state.habitos.append({
-            "nombre": nombre_habito,
-            "dias_semana": dias_semana,
-            "sancion": sancion
-        })
-        st.success("Hábito creado exitosamente!")
-        st.session_state.pantalla = "dashboard"
+        if submit_button:
+            # Agregar el hábito a la lista de hábitos
+            st.session_state.habitos.append({
+                "nombre": nombre_habito,
+                "dias_semana": dias_semana,
+                "sancion": sancion
+            })
+            st.success("Hábito creado exitosamente!")
+            st.session_state.pantalla = "dashboard"
 
 def dashboard():
     """Función para mostrar el dashboard de hábitos"""
@@ -96,14 +94,20 @@ def dashboard():
         st.write("---")
 
     # Botón para crear un nuevo hábito
-    if st.button("Crear Hábito", key="crear_habito"):
-        st.session_state.pantalla = "crear_habito"
+    with st.form("dashboard_form"):
+        submit_button = st.form_submit_button("Crear Hábito")
+
+        if submit_button:
+            st.session_state.pantalla = "crear_habito"
 
     # Botón para cerrar sesión
-    if st.button("Cerrar sesión", key="cerrar_sesion"):
-        st.session_state.logged_in = False
-        st.session_state.username = ""
-        st.session_state.pantalla = "login"
+    with st.form("cerrar_sesion_form"):
+        submit_button = st.form_submit_button("Cerrar sesión")
+
+        if submit_button:
+            st.session_state.logged_in = False
+            st.session_state.username = ""
+            st.session_state.pantalla = "login"
 
 def main():
     if st.session_state.pantalla == "login":
