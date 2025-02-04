@@ -106,11 +106,12 @@ def dashboard():
         st.session_state.pantalla = "login"
 
 def main():
-if st.session_state.pantalla == "login":
-login()
-elif st.session_state.pantalla == "crear_habito":
-crear_habito()
-elif st.session_state.pantalla == "dashboard":
-dashboard()
-if name == "main":
-main()
+    if st.session_state.pantalla == "login":
+        login()
+    elif st.session_state.pantalla == "crear_habito":
+        crear_habito()
+    elif st.session_state.pantalla == "dashboard":
+        dashboard()
+
+if __name__ == "__main__":
+    main()
