@@ -60,6 +60,16 @@ def home():
     st.title(f"🎉 Bienvenido {st.session_state.username}")
     st.write("¡Has iniciado sesión exitosamente!")
 
+    # Botón para ir a la pantalla de creación de hábitos
+    if st.button("Crear un nuevo hábito"):
+        st.session_state.current_page = "crear_habito"
+        st.experimental_rerun()
+
+    # Botón para ir al dashboard
+    if st.button("Ver Dashboard"):
+        st.session_state.current_page = "dashboard"
+        st.experimental_rerun()
+
     if st.button("Cerrar sesión"):
         st.session_state.logged_in = False
         st.session_state.username = ""
