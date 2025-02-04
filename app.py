@@ -11,6 +11,19 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
 
+# Agregar fondo de imagen de bienestar
+st.markdown(
+    """
+    <style>
+    .reportview-container {
+        background: url('https://www.example.com/tu-imagen.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 def login():
     """Función para manejar el inicio de sesión"""
     st.title("🔐 Inicio de Sesión")
