@@ -11,6 +11,23 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
 
+# Agregar fondo de gradiente con CSS
+st.markdown(
+    """
+    <style>
+    .reportview-container {
+        background: linear-gradient(to bottom, #A8D0E6, #FFFFFF); /* Azul pastel a blanco */
+        height: 100vh;
+        color: black;   /* Color de texto negro para mayor legibilidad */
+    }
+    .sidebar-content {
+        background: rgba(0, 0, 0, 0.5);  /* Fondo oscuro para la barra lateral */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 def login():
     """Función para manejar el inicio de sesión"""
     st.title("🔐 Inicio de Sesión")
@@ -28,9 +45,6 @@ def login():
             st.experimental_rerun()  # Recargar la página para mostrar la siguiente pantalla
         else:
             st.error("❌ Usuario o contraseña incorrectos")
-
-    # Mostrar imagen debajo del botón de inicio de sesión
-    st.image('https://mejorconsalud.as.com/wp-content/uploads/2023/12/wellness-tendencias-2024-scaled.jpg', use_container_width=True)
 
 def home():
     """Pantalla principal después de iniciar sesión"""
