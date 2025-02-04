@@ -11,9 +11,6 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
 
-if "screen" not in st.session_state:
-    st.session_state.screen = "login"  # Pantalla inicial es el login
-
 # Fondo con la imagen y el color de texto blanco
 page_bg_img = """
 <style>
@@ -21,15 +18,6 @@ page_bg_img = """
     background-image: url("https://img.freepik.com/foto-gratis/personas-que-toman-clases-pilates-reformador_23-2151093272.jpg?t=st=1738638246~exp=1738641846~hmac=c98b8738e3217cfda46863036a62ca7f8745ab9d61d03d3e99de187a0da9ea6a&w=2000");
     background-size: cover;
     color: white;
-    padding-bottom: 0 !important; /* Eliminar la barra debajo */
-}
-
-[data-testid="stButton"] {
-    color: black !important;  /* Cambié el color del texto a negro */
-    background-color: #f0f0f0;
-    border-radius: 50px;
-    padding: 10px 20px;
-    margin: 5px;
 }
 
 [data-testid="stHeader"] {
@@ -42,11 +30,6 @@ page_bg_img = """
 
 h1, h2, h3, h4, h5, h6, p {
     color: white;
-}
-
-/* Eliminando espacio o margen adicional */
-.stButton>button {
-    padding: 10px 20px;
 }
 </style>
 """
@@ -66,9 +49,13 @@ def login():
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
             st.session_state.username = username
-            st.session_state.screen = "crear_habito"  # Cambiar a la pantalla de crear hábito
+            st.success(f"✅ Bienvenido, {username}!")
+            st.experimental_rerun()  # Recargar la página para pasar a la siguiente pantalla
         else:
             st.error("❌ Usuario o contraseña incorrectos")
 
-# Control de flujo de la aplicación
-login()
+# Si el usuario no está logueado, mostrar la pantalla de login
+if not st.session_state.logged_in:
+    login()
+else:
+    st.experimental_rerun()  # Si está logueado, hacer rerun para cargar la siguiente pantalla
