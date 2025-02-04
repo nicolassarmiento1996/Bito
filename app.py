@@ -41,6 +41,7 @@ h1, h2, h3, h4, h5, h6, p {
 """
 
 st.markdown(page_bg_img, unsafe_allow_html=True)
+
 def login():
     """Función para manejar el inicio de sesión"""
     st.title(" Inicio de Sesión")
@@ -49,7 +50,7 @@ def login():
     with st.form("login_form"):
         username = st.text_input("Usuario")
         password = st.text_input("Contraseña", type="password")
-        submit_button = st.form_submit_button("Iniciar sesión", style="color:black")
+        submit_button = st.form_submit_button("Iniciar sesión", use_container_width=True)
 
         if submit_button:
             if username in USERS and USERS[username] == password:
