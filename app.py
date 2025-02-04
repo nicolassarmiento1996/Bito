@@ -54,6 +54,7 @@ def login():
             st.session_state.username = username
             st.session_state.next_page = "crear_habito"  # Página a la que debe ir después
             st.success(f"✅ Bienvenido, {username}!")
+            st.experimental_rerun()  # Recargar la página para redirigir
         else:
             st.error("❌ Usuario o contraseña incorrectos")
 
@@ -71,7 +72,7 @@ if st.session_state.logged_in:
 # Control de flujo: Mostrar la pantalla de login si no está autenticado
 if not st.session_state.logged_in:
     login()
-else:
-    if st.session_state.next_page == "crear_habito":
-        # Redirigir a la pantalla de creación de hábitos
-        st.experimental_rerun()
+elif st.session_state.next_page == "crear_habito":
+    # Si se ha autenticado, ir a la página de creación de hábitos
+    st.session_state.next_page = ""
+    st.experimental_rerun()  # Recargar para ir a la siguiente página
