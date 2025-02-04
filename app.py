@@ -29,12 +29,12 @@ page_bg_img = """
 }
 
 h1, h2, h3, h4, h5, h6, p {
-    color: white; /* Asegura que todos los textos sean blancos */
+    color: white; /* Asegura que todos los textos sean blancos, excepto el botón */
 }
 
-/* Cambiar color del texto del botón de "Iniciar sesión" */
-button[kind="primary"] {
-    color: black !important;
+div.stButton > button {
+    color: black !important; /* Cambia el texto del botón a negro */
+    background-color: #f0f0f0; /* O cualquier otro color que prefieras */
 }
 
 </style>
@@ -75,4 +75,3 @@ if not st.session_state.logged_in:
     login()
 else:
     home()
-
