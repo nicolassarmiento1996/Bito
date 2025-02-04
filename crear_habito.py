@@ -1,52 +1,69 @@
 import streamlit as st
 
-# Función de cierre de sesión
-def logout():
-    """Cerrar sesión"""
-    st.session_state.logged_in = False
-    st.session_state.username = ""
-    st.session_state.next_page = ""  # Limpiamos la página a redirigir
-    st.experimental_rerun()
+# Configuración de la sesión
+if "habitos" not in st.session_state:
+    st.session_state.habitos = []
 
-# Mostrar el botón de cerrar sesión en la parte superior derecha
-if st.session_state.logged_in:
-    st.sidebar.button("Cerrar sesión", on_click=logout)
+# Fondo con la imagen y el color de texto blanco
+page_bg_img = """
+<style>
+[data-testid="stAppViewContainer"] {
+    background-image: url("https://img.freepik.com/foto-gratis/personas-que-toman-clases-pilates-reformador_23-2151093272.jpg?t=st=1738638246~exp=1738641846~hmac=c98b8738e3217cfda46863036a62ca7f8745ab9d61d03d3e99de187a0da9ea6a&w=2000");
+    background-size: cover;
+    color: white;  /* Establecer color blanco para el texto */
+}
 
-# Verificar si el usuario está autenticado
-if not st.session_state.logged_in:
-    st.write("Por favor, inicia sesión para continuar.")
-else:
-    st.title("📝 Creación de Hábito")
+[data-testid="stHeader"] {
+    background-color: rgba(0, 0, 0, 0);
+}
 
-    # Entrada del nombre del hábito
-    habit_name = st.text_input("¿Cómo se llama tu hábito?")
+[data-testid="stToolbar"] {
+    right: 2rem;
+}
 
-    # Selección de días de la semana
-    days_of_week = ["L", "M", "X", "J", "V", "S", "D"]
-    selected_days = st.multiselect("Selecciona los días en los que vas a realizar este hábito:",
-                                   days_of_week, default=["L"])
+h1, h2, h3, h4, h5, h6, p {
+    color: white; /* Asegura que todos los textos sean blancos */
+}
 
-    # Entrada para la sanción
-    penalty = st.text_area("¿Cuál será la sanción si no cumples el hábito?")
+</style>
+"""
 
-    # Botón para guardar
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
+def crear_habito():
+    st.title("📝 Crear un Nuevo Hábito")
+
+    # Nombre del hábito
+    nombre_habito = st.text_input("Nombre del hábito")
+
+    # Días de la semana
+    dias_semana = st.multiselect(
+        "Selecciona los días de la semana",
+        options=["L", "M", "X", "J", "V", "S", "D"],
+        default=["L", "M", "X", "J", "V"]
+    )
+
+    # Sanción en caso de no cumplir
+    sancion = st.text_input("Sanción en caso de no cumplir")
+
+    # Botón para guardar el hábito
     if st.button("Aceptar"):
-        if habit_name and selected_days and penalty:
-            # Guardar los hábitos en el estado de sesión (para mantener los datos)
-            if "habits" not in st.session_state:
-                st.session_state.habits = []
-            st.session_state.habits.append({
-                "habit_name": habit_name,
-                "selected_days": selected_days,
-                "penalty": penalty
-            })
-            st.success("✅ ¡Hábito creado exitosamente!")
-            st.session_state.next_page = "dashboard"  # Cambiar la página a dashboard
-            st.experimental_rerun()  # Recargar la página para redirigir al dashboard
+        if nombre_habito and dias_semana and sancion:
+            nuevo_habito = {
+                "nombre": nombre_habito,
+                "dias": dias_semana,
+                "sancion": sancion,
+                "progreso": 0  # Inicializar progreso en 0
+            }
+            st.session_state.habitos.append(nuevo_habito)
+            st.success("¡Hábito creado exitosamente!")
         else:
-            st.error("❌ Todos los campos deben ser completados.")
+            st.error("Por favor, completa todos los campos.")
 
-    # Botón para redirigir al dashboard si ya se creó el hábito
-    if st.button("Ver Dashboard"):
-        st.session_state.next_page = "dashboard"
-        st.experimental_rerun()  # Redirige al dashboard
+    # Botón para volver al home
+    if st.button("Volver al Inicio"):
+        st.session_state.current_page = "home"
+        st.experimental_rerun()
+
+# Mostrar la pantalla de creación de hábitos
+crear_habito()
