@@ -19,7 +19,7 @@ st.markdown(
         background: url('https://mejorconsalud.as.com/wp-content/uploads/2023/12/wellness-tendencias-2024-scaled.jpg') no-repeat center center fixed;
         background-size: cover;
         height: 100vh;  # Asegura que ocupe toda la ventana
-        color: white;   # Opcional: cambiar el color del texto para hacerlo legible sobre el fondo
+        color: white;   # Opcional: cambiar el color del texto
     }
     .sidebar-content {
         background: rgba(0, 0, 0, 0.5);  # Fondo oscuro para la barra lateral
