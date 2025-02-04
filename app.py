@@ -1,67 +1,72 @@
 import streamlit as st
 
-# Variables globales para almacenar hábitos
-if "habitos" not in st.session_state:
-    st.session_state.habitos = []
+# Simulación de usuarios registrados
+USERS = {
+    "admin": "1234",
+    "usuario1": "contraseña123",
+}
 
-def crear_habito():
-    """Pantalla para crear un nuevo hábito"""
-    st.title("📅 Crear Nuevo Hábito")
+# Configuración de la sesión
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+    st.session_state.username = ""
 
-    # Nombre del hábito
-    habit_name = st.text_input("¿Qué hábito deseas crear?", "")
+# Fondo con la imagen y el color de texto blanco
+page_bg_img = """
+<style>
+[data-testid="stAppViewContainer"] {
+    background-image: url("https://img.freepik.com/foto-gratis/personas-que-toman-clases-pilates-reformador_23-2151093272.jpg?t=st=1738638246~exp=1738641846~hmac=c98b8738e3217cfda46863036a62ca7f8745ab9d61d03d3e99de187a0da9ea6a&w=2000");
+    background-size: cover;
+    color: white;  /* Establecer color blanco para el texto */
+}
 
-    # Selección de días de la semana
-    st.write("Selecciona los días de la semana para realizar tu hábito:")
-    days_of_week = ["L", "M", "X", "J", "V", "S", "D"]
-    selected_days = []
+[data-testid="stHeader"] {
+    background-color: rgba(0, 0, 0, 0);
+}
 
-    # Crear botones para seleccionar los días
-    for day in days_of_week:
-        if st.button(day, key=day):
-            selected_days.append(day)
+[data-testid="stToolbar"] {
+    right: 2rem;
+}
 
-    # Sanción
-    sanction = st.text_area("Escribe una sanción si no realizas el hábito:")
+h1, h2, h3, h4, h5, h6, p {
+    color: white; /* Asegura que todos los textos sean blancos */
+}
 
-    # Aceptar y guardar el hábito
-    if st.button("Aceptar"):
-        if habit_name and selected_days and sanction:
-            new_habit = {
-                "name": habit_name,
-                "days": selected_days,
-                "sanction": sanction
-            }
-            st.session_state.habitos.append(new_habit)
-            st.success(f"✅ Hábito '{habit_name}' creado con éxito!")
-            st.experimental_rerun()  # Recargar para pasar a la siguiente pantalla
+</style>
+"""
+
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
+def login():
+    """Función para manejar el inicio de sesión"""
+    st.title("🔐 Inicio de Sesión")
+
+    # Campos de inicio de sesión
+    username = st.text_input("Usuario")
+    password = st.text_input("Contraseña", type="password")
+
+    # Botón de iniciar sesión
+    if st.button("Iniciar sesión"):
+        if username in USERS and USERS[username] == password:
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.success(f"✅ Bienvenido, {username}!")
+            st.experimental_rerun()  # Recargar la página para mostrar la siguiente pantalla
         else:
-            st.error("❌ Por favor, completa todos los campos")
+            st.error("❌ Usuario o contraseña incorrectos")
 
-def dashboard():
-    """Pantalla de Dashboard para visualizar los hábitos registrados"""
-    st.title("📊 Dashboard de Hábitos")
+def home():
+    """Pantalla principal después de iniciar sesión"""
+    st.title(f"🎉 Bienvenido {st.session_state.username}")
+    st.write("¡Has iniciado sesión exitosamente!")
 
-    # Si no hay hábitos, mostrar mensaje
-    if not st.session_state.habitos:
-        st.write("No tienes hábitos registrados aún.")
-    else:
-        # Mostrar todos los hábitos
-        for habit in st.session_state.habitos:
-            st.write(f"**Hábito**: {habit['name']}")
-            st.write(f"**Días**: {', '.join(habit['days'])}")
-            st.write(f"**Sanción**: {habit['sanction']}")
-            st.write("---")
-
-            # Simular progreso de hábitos (por ejemplo, porcentaje de días cumplidos)
-            st.progress(50)  # Aquí puedes hacer que el progreso sea dinámico
-
-    if st.button("Crear nuevo hábito"):
+    if st.button("Cerrar sesión"):
         st.session_state.logged_in = False
-        st.experimental_rerun()  # Regresar a la pantalla de creación de hábito
+        st.session_state.username = ""
+        st.experimental_rerun()
 
-# Control de flujo: Mostrar la pantalla de creación de hábito si no hay hábitos creados
-if not st.session_state.habitos:
-    crear_habito()
+# Control de flujo: Mostrar la pantalla de login si no está autenticado
+if not st.session_state.logged_in:
+    login()
 else:
-    dashboard()
+    home()
