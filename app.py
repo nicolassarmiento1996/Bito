@@ -34,6 +34,10 @@ h1, h2, h3, h4, h5, h6, p {
     color: white; /* Asegura que todos los textos sean blancos */
 }
 
+button {
+    color: black; /* Establecer color negro para el texto de los botones */
+}
+
 </style>
 """
 
@@ -47,8 +51,8 @@ def login():
     username = st.text_input("Usuario")
     password = st.text_input("Contraseña", type="password")
 
-    # Botón de iniciar sesión con HTML para cambiar el color
-    if st.button("Iniciar sesión"):
+    # Botón de iniciar sesión
+    if st.button("Iniciar sesión", key="iniciar_sesion"):
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
             st.session_state.username = username
@@ -70,7 +74,7 @@ def crear_habito():
     sancion = st.text_input("Sanción en caso de no realizar el hábito")
 
     # Botón para aceptar
-    if st.button("Aceptar"):
+    if st.button("Aceptar", key="aceptar_habito"):
         # Agregar el hábito a la lista de hábitos
         st.session_state.habitos.append({
             "nombre": nombre_habito,
@@ -92,22 +96,21 @@ def dashboard():
         st.write("---")
 
     # Botón para crear un nuevo hábito
-    if st.button("Crear Hábito"):
+    if st.button("Crear Hábito", key="crear_habito"):
         st.session_state.pantalla = "crear_habito"
 
     # Botón para cerrar sesión
-    if st.button("Cerrar sesión"):
+    if st.button("Cerrar sesión", key="cerrar_sesion"):
         st.session_state.logged_in = False
         st.session_state.username = ""
         st.session_state.pantalla = "login"
 
 def main():
-    if st.session_state.pantalla == "login":
-        login()
-    elif st.session_state.pantalla == "crear_habito":
-        crear_habito()
-    elif st.session_state.pantalla == "dashboard":
-        dashboard()
-
-if __name__ == "__main__":
-    main()
+if st.session_state.pantalla == "login":
+login()
+elif st.session_state.pantalla == "crear_habito":
+crear_habito()
+elif st.session_state.pantalla == "dashboard":
+dashboard()
+if name == "main":
+main()
