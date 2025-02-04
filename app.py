@@ -16,12 +16,21 @@ st.markdown(
     """
     <style>
     .reportview-container {
-        background: url('https://www.google.com/search?sca_esv=1e35dc1f4110e681&rlz=1C5CHFA_enCO942CO942&sxsrf=AHTn8zpmJA10yFRSSxYLxhQFrjt1IOXPiA:1738636667343&q=wellness&udm=2&fbs=ABzOT_BnMAgCWdhr5zilP5f1cnRvK9uZj3HA_MTJAA6lXR8yQBjuP0Gi2zaJk2jrCSzqvvc_CWluySj4hbIgcxtM4wLBGEbwvGyOm-Aff7Cd6CLXwRP9LJOKeow_-uywyq1awzcUMQDGRMYmvDY7H9EaZgcKs6clJoih7mAG5eoRjT2-Nmjfv8st6WbeslRwnMyPx92TqA3w0kNUcwI2k7yY33klsmd_BQ&sa=X&ved=2ahUKEwib58yn_qiLAxVhtYQIHXmONfEQtKgLegQIGRAB&biw=1680&bih=928&dpr=2#vhid=yHq_WOvrabL0eM&vssid=mosaic') no-repeat center center fixed;
+        background: url('https://images.unsplash.com/photo-1574764199913-df05b1e03b0e') no-repeat center center fixed;
         background-size: cover;
+        height: 100vh;  # Asegura que ocupe toda la ventana
+        color: white;   # Opcional: cambiar el color del texto
+    }
+    .sidebar-content {
+        background: rgba(0, 0, 0, 0.5);  # Fondo oscuro para la barra lateral
     }
     </style>
     """,
     unsafe_allow_html=True
+)
+
+# Tu código para la app aquí...
+
 )
 
 def login():
