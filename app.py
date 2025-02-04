@@ -21,10 +21,11 @@ page_bg_img = """
     background-image: url("https://img.freepik.com/foto-gratis/personas-que-toman-clases-pilates-reformador_23-2151093272.jpg?t=st=1738638246~exp=1738641846~hmac=c98b8738e3217cfda46863036a62ca7f8745ab9d61d03d3e99de187a0da9ea6a&w=2000");
     background-size: cover;
     color: white;
+    padding-bottom: 0 !important; /* Eliminar la barra debajo */
 }
 
 [data-testid="stButton"] {
-    color: black;  /* Cambié el color del texto a negro */
+    color: black !important;  /* Cambié el color del texto a negro */
     background-color: #f0f0f0;
     border-radius: 50px;
     padding: 10px 20px;
@@ -43,9 +44,9 @@ h1, h2, h3, h4, h5, h6, p {
     color: white;
 }
 
-/* Eliminando la barra que se superpone debajo del botón */
-[data-testid="stAppViewContainer"] {
-    padding-bottom: 0 !important;
+/* Eliminando espacio o margen adicional */
+.stButton>button {
+    padding: 10px 20px;
 }
 </style>
 """
