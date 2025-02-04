@@ -10,7 +10,7 @@ USERS = {
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
-    st.session_state.next_page = ""  # Almacenamos la página siguiente
+    st.session_state.page = "login"  # Página inicial
 
 # Fondo con la imagen y el color de texto blanco
 page_bg_img = """
@@ -52,26 +52,57 @@ def login():
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
             st.session_state.username = username
-            st.session_state.next_page = "crear_habito"  # Página a la que debe ir después
+            st.session_state.page = "crear_habito"  # Página siguiente
             st.success(f"✅ Bienvenido, {username}!")
         else:
             st.error("❌ Usuario o contraseña incorrectos")
 
-def logout():
-    """Función de cierre de sesión"""
-    st.session_state.logged_in = False
-    st.session_state.username = ""
-    st.session_state.next_page = ""  # Limpiar la página a redirigir
-    st.experimental_rerun()  # Recargar para ir a la pantalla de inicio de sesión
+# Función para la página de creación de hábitos
+def crear_habito():
+    """Pantalla para crear hábitos"""
+    st.title("✍️ Crear un Hábito")
+    
+    # Campo para el nombre del hábito
+    habit_name = st.text_input("Nombre del hábito")
 
-# Agregar un botón de cerrar sesión en la parte superior derecha
-if st.session_state.logged_in:
-    st.sidebar.button("Cerrar sesión", on_click=logout)
+    # Selección de días de la semana
+    days_of_week = st.multiselect(
+        "Selecciona los días de la semana",
+        ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
+    )
+    
+    # Campo para la sanción
+    sanction = st.text_input("Escribe una sanción en caso de no cumplir con el hábito")
 
-# Control de flujo: Mostrar la pantalla de login si no está autenticado
+    # Botón para guardar el hábito
+    if st.button("Aceptar"):
+        st.session_state.habit_name = habit_name
+        st.session_state.days_of_week = days_of_week
+        st.session_state.sanction = sanction
+        st.session_state.page = "dashboard"  # Redirigir al dashboard
+
+        st.success(f"¡Hábito {habit_name} creado exitosamente!")
+
+# Función para el dashboard
+def dashboard():
+    """Pantalla del Dashboard"""
+    st.title(f"📊 Dashboard de {st.session_state.username}")
+
+    st.write(f"Hábito: {st.session_state.habit_name}")
+    st.write(f"Días de la semana: {', '.join(st.session_state.days_of_week)}")
+    st.write(f"Sanción: {st.session_state.sanction}")
+    
+    # Botón de cerrar sesión
+    if st.button("Cerrar sesión"):
+        st.session_state.logged_in = False
+        st.session_state.username = ""
+        st.session_state.page = "login"  # Regresar a login
+        st.experimental_rerun()  # Recargar la página para mostrar la pantalla de login
+
+# Control de flujo: Mostrar la pantalla correcta según el estado
 if not st.session_state.logged_in:
     login()
-elif st.session_state.next_page == "crear_habito":
-    # Si el usuario está autenticado, redirigirlo a la página de creación de hábitos
-    st.session_state.next_page = ""  # Limpiar el estado de la página siguiente
-    st.experimental_rerun()  # Recargar para ir a la pantalla de creación de hábitos
+elif st.session_state.page == "crear_habito":
+    crear_habito()
+elif st.session_state.page == "dashboard":
+    dashboard()
