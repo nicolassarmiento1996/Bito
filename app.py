@@ -10,6 +10,7 @@ USERS = {
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ""
+    st.session_state.pantalla = "login"
 
 # Fondo con la imagen y el color de texto blanco
 page_bg_img = """
@@ -50,8 +51,7 @@ def login():
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
             st.session_state.username = username
-            st.success(f" Bienvenido, {username}!")
-            st.experimental_rerun()  # Recargar la página para mostrar la siguiente pantalla
+            st.session_state.pantalla = "home"
         else:
             st.error("Usuario o contraseña incorrectos")
 
@@ -66,10 +66,15 @@ def home():
     if st.button("Cerrar sesión"):
         st.session_state.logged_in = False
         st.session_state.username = ""
-        st.experimental_rerun()
+        st.session_state.pantalla = "login"
 
-# Control de flujo: Mostrar la pantalla de login si no está autenticado
-if not st.session_state.logged_in:
-    login()
-else:
-    home()
+def main():
+    if st.session_state.pantalla == "login":
+        login()
+    elif st.session_state.pantalla == "home":
+        home()
+    elif st.session_state.pantalla == "crear_habito":
+        exec(open("crear_habito.py").read())
+
+if __name__ == "__main__":
+    main()
