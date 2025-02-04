@@ -20,14 +20,14 @@ st.markdown(
 )
 
 def crear_habito():
-    """Función para crear un nuevo hábito"""
-    st.title("Crear Hábito")
+    """Pantalla para crear un nuevo hábito"""
+    st.title("📝 Crear Hábito")
 
     with st.form("form_crear_habito"):
         # Campo para el nombre del hábito
         nombre_habito = st.text_input("Nombre del hábito")
 
-        # Campo para seleccionar los días de la semana (en horizontal)
+        # Campo para seleccionar los días de la semana (horizontal y en círculos)
         dias_semana = st.multiselect(
             "Días de la semana",
             ["L", "M", "X", "J", "V", "S", "D"]
@@ -36,8 +36,8 @@ def crear_habito():
         # Campo para la sanción
         sancion = st.text_input("Sanción en caso de no realizar el hábito")
 
-        # Botón de submit
-        submit_button = st.form_submit_button("Aceptar")  # 🚨 Se eliminó el parámetro `style`
+        # Botón de submit (✅ Se eliminó `style="color:black"`)
+        submit_button = st.form_submit_button("Aceptar")
 
         if submit_button:
             if nombre_habito and dias_semana:
