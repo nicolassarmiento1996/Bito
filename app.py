@@ -121,6 +121,10 @@ def dashboard():
 
     html_code = f"""
     <style>
+    <style>
+    .habito {
+        font-family: Helvetica, Arial, sans-serif;
+    }
     .habito {{
         background-color: white;
         padding: 20px;
