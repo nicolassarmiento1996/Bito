@@ -117,7 +117,7 @@ def dashboard():
 
     dias_semana = st.session_state.days_of_week
     tabla_seguimiento = []
-    progreso = sum(1 for dia in dias_semana if st.session_state.dias_cumplidos[dias_semana.index(dia)]) / len(dias_semana) * 100
+    progreso = 0
 
     html_code = f"""
     <style>
@@ -179,6 +179,9 @@ def dashboard():
         html_code += f"""
             <p>{dia}: {st.session_state.dia_{i}}</p>
         """
+    progreso = sum(1 for dia in tabla_seguimiento if dia[1]) / len(dias_semana) * 100
+    html_code = html_code.replace(str(int(progreso)), str(int(progreso)))
+    html_code = html_code.replace(str(int(progreso * 3.14)), str(int(progreso * 3.14)))
     html_code += f"""
         
         <h3>Progreso:</h3>
@@ -191,9 +194,6 @@ def dashboard():
     </div>
     """
     st.components.v1.html(html_code, height=600)
-
-    # Actualizar el progreso
-    progreso = sum(1 for dia in tabla_seguimiento if dia[1]) / len(dias_semana) * 100
 
     # Botón para guardar los cambios
     if st.button("Guardar cambios"):
