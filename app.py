@@ -173,7 +173,6 @@ def dashboard():
             <circle cx="50" cy="50" r="45" stroke="#ddd" stroke-width="10" fill="none"></circle>
             <circle cx="50" cy="50" r="45" stroke="#4CAF50" stroke-width="10" fill="none" class="progress"></circle>
         </svg>
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">{int(progreso)}%</div>
     </div>
     """,
     height=150,
