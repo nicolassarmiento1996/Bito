@@ -171,16 +171,13 @@ def dashboard():
         <h2>Hábito: {st.session_state.habit_name}</h2>
         <p>Sanción: {st.session_state.sanction}</p>
         
-        <h3>Cumplimiento de los días:</h3>
-        <ul>
-    """
+       # Tabla de seguimiento de los días
+    dias_semana = st.session_state.days_of_week
+    
+    # Mostrar la tabla de seguimiento
+    tabla_seguimiento = []
     for i, dia in enumerate(dias_semana):
-        html_code += f"""
-            <li>{dia}: {st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}")}</li>
-        """
-        tabla_seguimiento.append([dia, st.session_state.dias_cumplidos[i]])
-    html_code += f"""
-        </ul>
+        tabla_seguimiento.append([dia, st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}")])
         
         <h3>Progreso:</h3>
         <div class="progress-circle">
@@ -189,12 +186,6 @@ def dashboard():
                 <circle cx="50" cy="50" r="45" stroke="#4CAF50" stroke-width="10" fill="none" class="progress"></circle>
             </svg>
         </div>
-        
-        <button onclick="document.getElementById('guardar').click()">Guardar cambios</button>
-        <button id="guardar" style="display: none;" onclick="javascript: {{
-            st.session_state.dias_cumplidos = [{', '.join(f'{dia[1]}' for dia in tabla_seguimiento)}];
-            st.success('Cambios guardados exitosamente!');
-        }}">Guardar cambios</button>
     </div>
     """
     st.components.v1.html(html_code, height=550)
