@@ -121,15 +121,12 @@ def dashboard():
 
     html_code = f"""
     <style>
-    <style>
-    .habito {
-        font-family: Helvetica, Arial, sans-serif;
-    }
     .habito {{
         background-color: white;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        font-family: Helvetica, Arial, sans-serif;
     }}
     
     .progress-circle {{
