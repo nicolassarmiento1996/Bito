@@ -189,12 +189,6 @@ def dashboard():
                 <circle cx="50" cy="50" r="45" stroke="#4CAF50" stroke-width="10" fill="none" class="progress"></circle>
             </svg>
         </div>
-        
-        <button onclick="document.getElementById('guardar').click()">Guardar cambios</button>
-        <button id="guardar" style="display: none;" onclick="javascript: {{
-            st.session_state.dias_cumplidos = [{', '.join(f'{dia[1]}' for dia in tabla_seguimiento)}];
-            st.success('Cambios guardados exitosamente!');
-        }}">Guardar cambios</button>
     </div>
     """
     st.components.v1.html(html_code, height=600)
