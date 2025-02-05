@@ -187,8 +187,6 @@ def dashboard():
         st.session_state.dias_cumplidos = [dia[1] for dia in tabla_seguimiento]
         st.success("Cambios guardados exitosamente!")
     
-    # Mostrar la tabla de seguimiento
-    st.table(tabla_seguimiento)
 
 # Control de flujo: Mostrar la pantalla correcta según el estado
 if not st.session_state.logged_in:
