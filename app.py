@@ -191,3 +191,11 @@ def dashboard():
     
     # Mostrar la tabla de seguimiento
     st.table(tabla_seguimiento)
+
+# Control de flujo: Mostrar la pantalla correcta según el estado
+if not st.session_state.logged_in:
+    login()
+elif st.session_state.page == "crear_habito":
+    crear_habito()
+elif st.session_state.page == "dashboard":
+    dashboard()
