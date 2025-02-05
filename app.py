@@ -192,6 +192,9 @@ def dashboard():
     </div>
     """
     st.components.v1.html(html_code, height=600)
+
+    # Actualizar el progreso
+    progreso = sum(1 for dia in tabla_seguimiento if dia[1]) / len(dias_semana) * 100
     
     # Botón para guardar los cambios
     if st.button("Guardar cambios"):
