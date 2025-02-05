@@ -72,48 +72,36 @@ def login():
 
 # Función para la pantalla de crear hábito
 def crear_habito():
-    """Pantalla para crear hábitos"""
-    st.title("Crear un Hábito")
+    st.title("Crear hábito")
     
-    # Campo para el nombre del hábito
-    habit_name = st.text_input("Nombre del hábito")
+    # Formulario para crear hábito
+    with st.form("crear_habito"):
+        habit_name = st.text_input("Nombre del hábito")
+        days_of_week = st.multiselect("Días de la semana", ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"])
+        sanction = st.text_input("Sanción")
+        
+        # Botón para crear hábito
+        if st.form_submit_button("Crear hábito"):
+            st.session_state.habit_name = habit_name
+            st.session_state.days_of_week = days_of_week
+            st.session_state.sanction = sanction
+            st.session_state.dias_cumplidos = [False] * len(days_of_week)
+            st.success("Hábito creado exitosamente!")
+            st.session_state.page = "dashboard"
 
-    # Selección de días de la semana
-    days_of_week = st.multiselect(
-        "Selecciona los días de la semana",
-        ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
-    )
-    
-    # Campo para la sanción
-    sanction = st.text_input("Escribe una sanción en caso de no cumplir con el hábito")
 
-    # Botones para guardar el hábito y ver mis hábitos
-    col1, col2 = st.columns([3, 1])
-    if col1.button("Aceptar"):
-        st.session_state.habit_name = habit_name
-        st.session_state.days_of_week = days_of_week
-        st.session_state.sanction = sanction
-        st.success(f"Hábito {habit_name} creado exitosamente!")
-    
-    if col2.button("Ver mis hábitos"):
-        st.session_state.page = "dashboard"  # Cambiar a la pantalla de dashboard
-
-# Función para mostrar la pantalla de dashboard
-# Función para mostrar la pantalla de dashboard
+# Página de dashboard
 def dashboard():
     st.title("Dashboard")
     
     # Mostrar los hábitos creados
     st.write("Hábitos creados:")
     st.write(st.session_state.habit_name)
+    st.write(st.session_state.days_of_week)
     st.write(st.session_state.sanction)
     
     # Tabla de seguimiento de los días
-    dias_semana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
-    
-    # Crear una lista para almacenar los días que se han cumplido
-    if "dias_cumplidos" not in st.session_state:
-        st.session_state.dias_cumplidos = [False] * len(dias_semana)
+    dias_semana = st.session_state.days_of_week
     
     # Mostrar la tabla de seguimiento
     tabla_seguimiento = []
@@ -124,59 +112,57 @@ def dashboard():
     progreso = sum(1 for dia in tabla_seguimiento if dia[1]) / len(dias_semana) * 100
     
     # Mostrar el gráfico de progreso
-    st.write("Progreso:")
-    import streamlit.components.v1 as components
     components.html(
-    f"""
-    <style>
-    .progress-circle {{
-        position: relative;
-        display: inline-block;
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        background-color: #f2f2f2;
-    }}
-    
-    .progress-circle::after {{
-        content: '{int(progreso)}%';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 20px;
-        font-weight: bold;
-    }}
-    
-    .progress-circle svg {{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }}
-    
-    .progress-circle svg circle {{
-        stroke-width: 10;
-        stroke-linecap: round;
-        transform: rotate(-90deg);
-        transform-origin: center;
-    }}
-    
-    .progress-circle svg circle.progress {{
-        stroke-dasharray: {int(progreso * 3.14)} 314;
-    }}
-    </style>
-    
-    <div class="progress-circle">
-        <svg>
-            <circle cx="50" cy="50" r="45" stroke="#ddd" stroke-width="10" fill="none"></circle>
-            <circle cx="50" cy="50" r="45" stroke="#4CAF50" stroke-width="10" fill="none" class="progress"></circle>
-        </svg>
-    </div>
-    """,
-    height=150,
-)
+        f"""
+        <style>
+        .progress-circle {{
+            position: relative;
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #f2f2f2;
+        }}
+        
+        .progress-circle::after {{
+            content: '{int(progreso)}%';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            font-weight: bold;
+        }}
+        
+        .progress-circle svg {{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }}
+        
+        .progress-circle svg circle {{
+            stroke-width: 10;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+        }}
+        
+        .progress-circle svg circle.progress {{
+            stroke-dasharray: {int(progreso * 3.14)} 314;
+        }}
+        </style>
+        
+        <div class="progress-circle">
+            <svg>
+                <circle cx="50" cy="50" r="45" stroke="#ddd" stroke-width="10" fill="none"></circle>
+                <circle cx="50" cy="50" r="45" stroke="#4CAF50" stroke-width="10" fill="none" class="progress"></circle>
+            </svg>
+        </div>
+        """,
+        height=150,
+    )
     
     # Botón para guardar los cambios
     if st.button("Guardar cambios"):
