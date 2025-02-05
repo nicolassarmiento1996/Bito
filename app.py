@@ -1,5 +1,19 @@
 import streamlit as st
 
+# Aplicar CSS para cambiar el color de los botones
+st.markdown(
+    """
+    <style>
+    div.stButton > button, div.stFormSubmitButton > button {
+        color: white !important;
+        background-color: red !important;
+        border-color: red !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Simulación de usuarios registrados
 USERS = {
     "admin": "1234",
