@@ -115,7 +115,10 @@ def dashboard():
 def dashboard():
     st.title("Dashboard")
 
-    # Mostrar los hábitos creados
+    dias_semana = st.session_state.days_of_week
+    tabla_seguimiento = []
+    progreso = sum(1 for dia in dias_semana if st.session_state.dias_cumplidos[dias_semana.index(dia)]) / len(dias_semana) * 100
+
     html_code = f"""
     <style>
     .habito {{
@@ -135,7 +138,7 @@ def dashboard():
     }}
     
     .progress-circle::after {{
-        content: '{int(sum(1 for dia in st.session_state.days_of_week if st.session_state.dias_cumplidos[st.session_state.days_of_week.index(dia)]) / len(st.session_state.days_of_week) * 100)}%';
+        content: '{int(progreso)}%';
         position: absolute;
         top: 50%;
         left: 50%;
@@ -160,7 +163,7 @@ def dashboard():
     }}
     
     .progress-circle svg circle.progress {{
-        stroke-dasharray: {int(sum(1 for dia in st.session_state.days_of_week if st.session_state.dias_cumplidos[st.session_state.days_of_week.index(dia)]) / len(st.session_state.days_of_week) * 3.14)} 314;
+        stroke-dasharray: {int(progreso * 3.14)} 314;
     }}
     </style>
     
@@ -171,8 +174,6 @@ def dashboard():
         <h3>Cumplimiento de los días:</h3>
         <ul>
     """
-    dias_semana = st.session_state.days_of_week
-    tabla_seguimiento = []
     for i, dia in enumerate(dias_semana):
         html_code += f"""
             <li>{dia}: {st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}")}</li>
@@ -188,9 +189,15 @@ def dashboard():
                 <circle cx="50" cy="50" r="45" stroke="#4CAF50" stroke-width="10" fill="none" class="progress"></circle>
             </svg>
         </div>
+        
+        <button onclick="document.getElementById('guardar').click()">Guardar cambios</button>
+        <button id="guardar" style="display: none;" onclick="javascript: {{
+            st.session_state.dias_cumplidos = [{', '.join(f'{dia[1]}' for dia in tabla_seguimiento)}];
+            st.success('Cambios guardados exitosamente!');
+        }}">Guardar cambios</button>
     </div>
     """
-    st.components.v1.html(html_code, height=500)
+    st.components.v1.html(html_code, height=550)
     
     # Botón para guardar los cambios
     if st.button("Guardar cambios"):
