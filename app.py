@@ -119,7 +119,6 @@ def dashboard():
     # Mostrar los hábitos creados
     st.write("Hábitos creados:")
     st.write(st.session_state.habit_name)
-    st.write(st.session_state.days_of_week)
     st.write(st.session_state.sanction)
     
     # Tabla de seguimiento de los días
