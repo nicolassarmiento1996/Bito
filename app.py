@@ -99,13 +99,15 @@ def crear_habito():
         st.session_state.page = "dashboard"  # Cambiar a la pantalla de dashboard
 
 # Función para mostrar la pantalla de dashboard
+# Función para mostrar la pantalla de dashboard
 def dashboard():
     st.title("Dashboard")
     
     # Mostrar los hábitos creados
     st.write("Hábitos creados:")
     st.write(st.session_state.habit_name)
-    st.write(st.session_state.sanction)  # Eliminado st.session_state.days_of_week
+    st.write(st.session_state.days_of_week)
+    st.write(st.session_state.sanction)
     
     # Tabla de seguimiento de los días
     dias_semana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
@@ -115,18 +117,77 @@ def dashboard():
         st.session_state.dias_cumplidos = [False] * len(dias_semana)
     
     # Mostrar la tabla de seguimiento
+    tabla_seguimiento = []
     for i, dia in enumerate(dias_semana):
-        st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}", value=st.session_state.dias_cumplidos[i])
+        tabla_seguimiento.append([dia, st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}", value=st.session_state.dias_cumplidos[i])])
+    
+    # Calcular el progreso
+    progreso = sum(1 for dia in tabla_seguimiento if dia[1]) / len(dias_semana) * 100
+    
+    # Mostrar el gráfico de progreso
+    st.write("Progreso:")
+    import streamlit.components.v1 as components
+    components.html(
+        """
+        <style>
+        .progress-circle {
+            position: relative;
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #f2f2f2;
+        }
+        
+        .progress-circle::after {
+            content: '%s%%' %s;
+            position: absolute;
+            top: 50%%;
+            left: 50%%;
+            transform: translate(-50%%, -50%%);
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .progress-circle .progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%%;
+            height: 100%%;
+            border-radius: 50%%;
+            background-color: #4CAF50;
+            clip-path: polygon(50%% 50%%, 50%% 0, 100%% 0, 100%% 50%%, 50%% 50%%);
+            transform: rotate(-90deg);
+            transform-origin: center;
+        }
+        
+        .progress-circle .progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%%;
+            height: 100%%;
+            border-radius: 50%%;
+            background-color: #4CAF50;
+            clip-path: polygon(50%% 50%%, 50%% 0, 100%% 0, 100%% 50%%, 50%% 50%%);
+            transform: rotate(%sdeg);
+            transform-origin: center;
+        }
+        </style>
+        
+        <div class="progress-circle">
+            <div class="progress" style="--progress:%s;"></div>
+        </div>
+        """ % (int(progreso), 'center', int(progreso * 3.6), int(progreso)),
+        height=150,
+    )
     
     # Botón para guardar los cambios
     if st.button("Guardar cambios"):
-        st.session_state.dias_cumplidos = [st.session_state[f"dia_{i}"] for i in range(len(dias_semana))]
+        st.session_state.dias_cumplidos = [tabla_seguimiento[i][1] for i in range(len(dias_semana))]
         st.success("Cambios guardados exitosamente!")
-
-# Control de flujo: Mostrar la pantalla correcta según el estado
-if not st.session_state.logged_in:
-    login()
-elif st.session_state.page == "crear_habito":
-    crear_habito()
-elif st.session_state.page == "dashboard":
-    dashboard()
+    
+    # Mostrar la tabla de seguimiento
+    st.table(tabla_seguimiento)
