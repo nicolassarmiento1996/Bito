@@ -80,15 +80,14 @@ def crear_habito():
         days_of_week = st.multiselect("Días de la semana", ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"])
         sanction = st.text_input("Sanción")
         
-        # Botón para crear hábito
-        if st.form_submit_button("Crear hábito"):
+        # Botón para crear hábito y ver mis hábitos
+        if st.form_submit_button("Crear hábito y ver mis hábitos"):
             st.session_state.habit_name = habit_name
             st.session_state.days_of_week = days_of_week
             st.session_state.sanction = sanction
             st.session_state.dias_cumplidos = [False] * len(days_of_week)
             st.success("Hábito creado exitosamente!")
             st.session_state.page = "dashboard"
-
 
 # Página de dashboard
 # Página de dashboard
