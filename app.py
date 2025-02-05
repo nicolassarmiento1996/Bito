@@ -114,26 +114,17 @@ def dashboard():
     # Página de dashboard
 def dashboard():
     st.title("Dashboard")
-    
+
     # Mostrar los hábitos creados
-    st.write("Hábitos creados:")
-    st.write(st.session_state.habit_name)
-    st.write(st.session_state.sanction)
-    
-    # Tabla de seguimiento de los días
-    dias_semana = st.session_state.days_of_week
-    
-    # Mostrar la tabla de seguimiento
-    tabla_seguimiento = []
-    for i, dia in enumerate(dias_semana):
-        tabla_seguimiento.append([dia, st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}")])
-    
-    # Calcular el progreso
-    progreso = sum(1 for dia in tabla_seguimiento if dia[1]) / len(dias_semana) * 100
-    
-    # Mostrar el gráfico de progreso
     html_code = f"""
     <style>
+    .habito {{
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+    }}
+    
     .progress-circle {{
         position: relative;
         display: inline-block;
@@ -144,7 +135,7 @@ def dashboard():
     }}
     
     .progress-circle::after {{
-        content: '{int(progreso)}%';
+        content: '{int(sum(1 for dia in st.session_state.days_of_week if st.session_state.dias_cumplidos[st.session_state.days_of_week.index(dia)]) / len(st.session_state.days_of_week) * 100)}%';
         position: absolute;
         top: 50%;
         left: 50%;
@@ -169,18 +160,37 @@ def dashboard():
     }}
     
     .progress-circle svg circle.progress {{
-        stroke-dasharray: {int(progreso * 3.14)} 314;
+        stroke-dasharray: {int(sum(1 for dia in st.session_state.days_of_week if st.session_state.dias_cumplidos[st.session_state.days_of_week.index(dia)]) / len(st.session_state.days_of_week) * 3.14)} 314;
     }}
     </style>
     
-    <div class="progress-circle">
-        <svg>
-            <circle cx="50" cy="50" r="45" stroke="#ddd" stroke-width="10" fill="none"></circle>
-            <circle cx="50" cy="50" r="45" stroke="#4CAF50" stroke-width="10" fill="none" class="progress"></circle>
-        </svg>
+    <div class="habito">
+        <h2>Hábito: {st.session_state.habit_name}</h2>
+        <p>Sanción: {st.session_state.sanction}</p>
+        
+        <h3>Cumplimiento de los días:</h3>
+        <ul>
+    """
+    dias_semana = st.session_state.days_of_week
+    tabla_seguimiento = []
+    for i, dia in enumerate(dias_semana):
+        html_code += f"""
+            <li>{dia}: {st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}")}</li>
+        """
+        tabla_seguimiento.append([dia, st.session_state.dias_cumplidos[i]])
+    html_code += f"""
+        </ul>
+        
+        <h3>Progreso:</h3>
+        <div class="progress-circle">
+            <svg>
+                <circle cx="50" cy="50" r="45" stroke="#ddd" stroke-width="10" fill="none"></circle>
+                <circle cx="50" cy="50" r="45" stroke="#4CAF50" stroke-width="10" fill="none" class="progress"></circle>
+            </svg>
+        </div>
     </div>
     """
-    st.components.v1.html(html_code, height=200)
+    st.components.v1.html(html_code, height=500)
     
     # Botón para guardar los cambios
     if st.button("Guardar cambios"):
