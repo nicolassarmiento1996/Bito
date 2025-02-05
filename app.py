@@ -128,61 +128,61 @@ def dashboard():
     st.write("Progreso:")
     import streamlit.components.v1 as components
     components.html(
-        """
-        <style>
-        .progress-circle {
-            position: relative;
-            display: inline-block;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: #f2f2f2;
-        }
-        
-        .progress-circle::after {
-            content: '%s%%' %s;
-            position: absolute;
-            top: 50%%;
-            left: 50%%;
-            transform: translate(-50%%, -50%%);
-            font-size: 20px;
-            font-weight: bold;
-        }
-        
-        .progress-circle .progress {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%%;
-            height: 100%%;
-            border-radius: 50%%;
-            background-color: #4CAF50;
-            clip-path: polygon(50%% 50%%, 50%% 0, 100%% 0, 100%% 50%%, 50%% 50%%);
-            transform: rotate(-90deg);
-            transform-origin: center;
-        }
-        
-        .progress-circle .progress::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%%;
-            height: 100%%;
-            border-radius: 50%%;
-            background-color: #4CAF50;
-            clip-path: polygon(50%% 50%%, 50%% 0, 100%% 0, 100%% 50%%, 50%% 50%%);
-            transform: rotate(%sdeg);
-            transform-origin: center;
-        }
-        </style>
-        
-        <div class="progress-circle">
-            <div class="progress" style="--progress:%s;"></div>
-        </div>
-        """ % (int(progreso), 'center', int(progreso * 3.6), int(progreso)),
-        height=150,
-    )
+    """
+    <style>
+    .progress-circle {
+        position: relative;
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: #f2f2f2;
+    }
+    
+    .progress-circle::after {
+        content: '%s%%';
+        position: absolute;
+        top: 50%%;
+        left: 50%%;
+        transform: translate(-50%%, -50%%);
+        font-size: 20px;
+        font-weight: bold;
+    }
+    
+    .progress-circle .progress {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%%;
+        height: 100%%;
+        border-radius: 50%%;
+        background-color: #4CAF50;
+        clip-path: polygon(50%% 50%%, 50%% 0, 100%% 0, 100%% 50%%, 50%% 50%%);
+        transform: rotate(-90deg);
+        transform-origin: center;
+    }
+    
+    .progress-circle .progress::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%%;
+        height: 100%%;
+        border-radius: 50%%;
+        background-color: #4CAF50;
+        clip-path: polygon(50%% 50%%, 50%% 0, 100%% 0, 100%% 50%%, 50%% 50%%);
+        transform: rotate(%sdeg);
+        transform-origin: center;
+    }
+    </style>
+    
+    <div class="progress-circle">
+        <div class="progress" style="--progress:%s;"></div>
+    </div>
+    """ % (int(progreso), int(progreso * 3.6), int(progreso)),
+    height=150,
+)
     
     # Botón para guardar los cambios
     if st.button("Guardar cambios"):
