@@ -1,4 +1,4 @@
-import streamlit as st
+import streamlit.components.v1 as components
 
 # Aplicar CSS para cambiar el color de los botones
 st.markdown(
