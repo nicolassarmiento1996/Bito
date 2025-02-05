@@ -112,57 +112,77 @@ def dashboard():
     progreso = sum(1 for dia in tabla_seguimiento if dia[1]) / len(dias_semana) * 100
     
     # Mostrar el gráfico de progreso
-    components.html(
-        f"""
-        <style>
-        .progress-circle {{
-            position: relative;
-            display: inline-block;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: #f2f2f2;
-        }}
-        
-        .progress-circle::after {{
-            content: '{int(progreso)}%';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 20px;
-            font-weight: bold;
-        }}
-        
-        .progress-circle svg {{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }}
-        
-        .progress-circle svg circle {{
-            stroke-width: 10;
-            stroke-linecap: round;
-            transform: rotate(-90deg);
-            transform-origin: center;
-        }}
-        
-        .progress-circle svg circle.progress {{
-            stroke-dasharray: {int(progreso * 3.14)} 314;
-        }}
-        </style>
-        
-        <div class="progress-circle">
-            <svg>
-                <circle cx="50" cy="50" r="45" stroke="#ddd" stroke-width="10" fill="none"></circle>
-                <circle cx="50" cy="50" r="45" stroke="#4CAF50" stroke-width="10" fill="none" class="progress"></circle>
-            </svg>
-        </div>
-        """,
-        height=150,
-    )
+    # Página de dashboard
+def dashboard():
+    st.title("Dashboard")
+    
+    # Mostrar los hábitos creados
+    st.write("Hábitos creados:")
+    st.write(st.session_state.habit_name)
+    st.write(st.session_state.days_of_week)
+    st.write(st.session_state.sanction)
+    
+    # Tabla de seguimiento de los días
+    dias_semana = st.session_state.days_of_week
+    
+    # Mostrar la tabla de seguimiento
+    tabla_seguimiento = []
+    for i, dia in enumerate(dias_semana):
+        tabla_seguimiento.append([dia, st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}")])
+    
+    # Calcular el progreso
+    progreso = sum(1 for dia in tabla_seguimiento if dia[1]) / len(dias_semana) * 100
+    
+    # Mostrar el gráfico de progreso
+    html_code = f"""
+    <style>
+    .progress-circle {{
+        position: relative;
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: #f2f2f2;
+    }}
+    
+    .progress-circle::after {{
+        content: '{int(progreso)}%';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20px;
+        font-weight: bold;
+    }}
+    
+    .progress-circle svg {{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }}
+    
+    .progress-circle svg circle {{
+        stroke-width: 10;
+        stroke-linecap: round;
+        transform: rotate(-90deg);
+        transform-origin: center;
+    }}
+    
+    .progress-circle svg circle.progress {{
+        stroke-dasharray: {int(progreso * 3.14)} 314;
+    }}
+    </style>
+    
+    <div class="progress-circle">
+        <svg>
+            <circle cx="50" cy="50" r="45" stroke="#ddd" stroke-width="10" fill="none"></circle>
+            <circle cx="50" cy="50" r="45" stroke="#4CAF50" stroke-width="10" fill="none" class="progress"></circle>
+        </svg>
+    </div>
+    """
+    st.components.v1.html(html_code, height=200)
     
     # Botón para guardar los cambios
     if st.button("Guardar cambios"):
