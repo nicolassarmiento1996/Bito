@@ -148,23 +148,32 @@ def dashboard():
         font-weight: bold;
     }}
     
-    .progress-circle .progress {{
+    .progress-circle svg {{
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        border-radius: 50%;
-        background-color: transparent;
-        border: 10px solid #4CAF50;
-        clip-path: polygon(50% 50%, 50% 0, 100% 0, 100% 50%, 50% 50%);
-        transform: rotate({-90 + int(progreso * 3.6)}deg);
+    }}
+    
+    .progress-circle svg circle {{
+        stroke-width: 10;
+        stroke-linecap: round;
+        transform: rotate(-90deg);
         transform-origin: center;
+    }}
+    
+    .progress-circle svg circle.progress {{
+        stroke-dasharray: {int(progreso * 3.14)} 314;
     }}
     </style>
     
     <div class="progress-circle">
-        <div class="progress"></div>
+        <svg>
+            <circle cx="50" cy="50" r="45" stroke="#ddd" stroke-width="10" fill="none"></circle>
+            <circle cx="50" cy="50" r="45" stroke="#4CAF50" stroke-width="10" fill="none" class="progress"></circle>
+        </svg>
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">{int(progreso)}%</div>
     </div>
     """,
     height=150,
