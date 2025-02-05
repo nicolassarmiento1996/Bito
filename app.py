@@ -91,6 +91,7 @@ def crear_habito():
 
 
 # Página de dashboard
+# Página de dashboard
 def dashboard():
     st.title("Dashboard")
     
@@ -106,7 +107,7 @@ def dashboard():
     # Mostrar la tabla de seguimiento
     tabla_seguimiento = []
     for i, dia in enumerate(dias_semana):
-        tabla_seguimiento.append([dia, st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}", value=st.session_state.dias_cumplidos[i])])
+        tabla_seguimiento.append([dia, st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}")])
     
     # Calcular el progreso
     progreso = sum(1 for dia in tabla_seguimiento if dia[1]) / len(dias_semana) * 100
@@ -166,7 +167,7 @@ def dashboard():
     
     # Botón para guardar los cambios
     if st.button("Guardar cambios"):
-        st.session_state.dias_cumplidos = [tabla_seguimiento[i][1] for i in range(len(dias_semana))]
+        st.session_state.dias_cumplidos = [dia[1] for dia in tabla_seguimiento]
         st.success("Cambios guardados exitosamente!")
     
     # Mostrar la tabla de seguimiento
