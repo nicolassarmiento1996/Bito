@@ -175,11 +175,10 @@ def dashboard():
         <h3>Cumplimiento de los días:</h3>
     """
     for i, dia in enumerate(dias_semana):
+        tabla_seguimiento.append([dia, st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}")])
         html_code += f"""
-            <input type="checkbox" id="dia_{i}" name="dia_{i}" {'checked' if st.session_state.dias_cumplidos[i] else ''}>
-            <label for="dia_{i}">{dia}</label><br>
+            <p>{dia}: {st.session_state.dia_{i}}</p>
         """
-        tabla_seguimiento.append([dia, st.session_state.dias_cumplidos[i]])
     html_code += f"""
         
         <h3>Progreso:</h3>
@@ -195,7 +194,7 @@ def dashboard():
 
     # Actualizar el progreso
     progreso = sum(1 for dia in tabla_seguimiento if dia[1]) / len(dias_semana) * 100
-    
+
     # Botón para guardar los cambios
     if st.button("Guardar cambios"):
         st.session_state.dias_cumplidos = [dia[1] for dia in tabla_seguimiento]
