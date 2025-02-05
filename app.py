@@ -176,8 +176,8 @@ def dashboard():
     """
     for i, dia in enumerate(dias_semana):
         tabla_seguimiento.append([dia, st.checkbox(f"Cumplido el {dia}", key=f"dia_{i}")])
-        html_code += f"""
-            <p>{dia}: {st.session_state.dia_{i}}</p>
+    html_code += f"""
+    <p>{dia}: {st.session_state[f'dia_{i}']}</p>
         """
     progreso = sum(1 for dia in tabla_seguimiento if dia[1]) / len(dias_semana) * 100
     html_code = html_code.replace(str(int(progreso)), str(int(progreso)))
