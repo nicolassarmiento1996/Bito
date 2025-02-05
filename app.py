@@ -155,29 +155,16 @@ def dashboard():
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        background-color: #4CAF50;
+        background-color: transparent;
+        border: 10px solid #4CAF50;
         clip-path: polygon(50% 50%, 50% 0, 100% 0, 100% 50%, 50% 50%);
-        transform: rotate(-90deg);
-        transform-origin: center;
-    }}
-    
-    .progress-circle .progress::after {{
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        background-color: #4CAF50;
-        clip-path: polygon(50% 50%, 50% 0, 100% 0, 100% 50%, 50% 50%);
-        transform: rotate({int(progreso * 3.6)}deg);
+        transform: rotate({-90 + int(progreso * 3.6)}deg);
         transform-origin: center;
     }}
     </style>
     
     <div class="progress-circle">
-        <div class="progress" style="--progress:{int(progreso)};"></div>
+        <div class="progress"></div>
     </div>
     """,
     height=150,
